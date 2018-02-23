@@ -1,6 +1,8 @@
 # Retro Gaming Workshop
 First offered Winter 2018 at Seattle CoderDojo (https://seattlecoderdojo.com)
 
+Thanks to Amazon.com for hosting.
+
 The content here is divided into 5 classroom sessions of approximately 100 minutes each (2 hours minus 10 minutes on each side).
 
 ## Session 1: Phaser, JavaScript, and Gaming Basics
