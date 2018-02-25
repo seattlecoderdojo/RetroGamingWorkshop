@@ -96,12 +96,103 @@ window.onload = function() {
 ### Why doesn't it do anything?
 
 Why are you just seeing a black box? Because that's all you've asked for so far.
-    var game = new Phaser.Game(500, 500);
+```javascript
+var game = new Phaser.Game(500, 500);
+```
 You've set up a stage that is 500 pixels high and 500 pixels wide. But you've done it with one line of code. Phaser is doing a lot of work behind the scenes determining what the browser supports and creating a game canvas your browser can work with. It's also built a bunch of infrastructure behind the scenes to manage sounds, images, and more.
 
-### Let's make it do something
+More importantly you've generated a <u>game object</u>. Perhaps you've heard the term "object oriented programming" or have actually done some, but we'll explain a few concepts quickly.
+
+**Variables** are buckets you can store things in; a number, a word, even a function or object.
+
+**Functions** are discrete pieces of code that do things. As you saw above, we assigned a function that generated this game object to the `window.onload` event.
+
+**Objects** are specialized buckets which contain variables (also called properties when they're in an object) and functions (also known as methods when they're in a method).
+
+### Let's make our empty, actionless game do something
 
 The most basic part of any game is to put an image on the screen. Whether it's a spaceship, a pirate, or your super cool logo.
+
+In `game.js`, we'll create a slightly larger stage. Let's set it to 900 by 700. We'll also add a few more arguments, so our script opens like this.
+
+```javascript
+window.onload = function() {
+   var game = new Phaser.Game(900, 700, Phaser.AUTO, '', { preload: preload, create: create });
+}
+```
+
+When you create the game object, you can pass in more arguments than just the height and width. 
+
+The third argument we're passing is the renderer. By choosing Phaser.AUTO we're letting Phaser choose the best available renderer, but we could choose a basic 2D HTML Canvas, WebGL for 3D, etc.
+
+The 4th argument is the game's parent object. In this case, we're passing nothing.
+
+The 5th argument is actually an object. It's written in Object Literal Notation, which is a great way for quickly defining an object. In this simple configuration object, we're telling the game object that the code for preloading will be in a function called "preload," and the code to "create" the game (setting up a whole bunch of its details) will be in a function called "create." 
+
+So, let's preload our image by adding a preload function to the `window.onload()` function. And if you're wondering... yes... functions can contain other functions.
+
+```javascript
+function preload(){
+  game.load.image('knight', '/week1/assets/gameart/Walk%20(1).png');
+}
+```
+
+We're telling it to load an image we'll call "knight" and giving it the location where the image lives. The image is "Walk (1).png," because it's the first frame of a 10-frame walk animation we'll hopefully get to today. If we don't get to it in the workshop, it's still in this doc and we'll go over it again in the Space Invaders clone we'll build in Week 3.
+
+And to be nice, we'll point out we got our knight sprites from [gameart2d.com](https://www.gameart2d.com/the-knight-free-sprites.html).  Duane (Sir Duane, actually, but his friends don't have to be formal) might not be as chunky and pixelated as we might hope for retro game art, but we can have a little polish on the platformer we'll make later on.
+
+Last, in our "create" function, we'll add the Duane to the game, making our whole game.js file look like this.
+
+```javascript
+window.onload = function() {
+  var game = new Phaser.Game(900, 700, Phaser.AUTO, '', { preload: preload, create: create });
+  
+  function preload(){
+    game.load.image('knight', '/week1/assets/gameart/Walk%20(1).png');
+  }
+
+  function create(){
+    var knight = game.add.sprite(game.world.centerX, game.world.centerY, 'knight');  
+  } 
+}
+```
+
+To add him, we call the game.add.sprite method, giving it an X coordinate, a Y coordinate, and the image we want to use. For the position coordinates, we're using the centerpoint of the "world" (or the big black box), so he'll be centered.
+
+We can now refresh the screen with that black box in it and we'll see our knight.
+
+### Okay, let's really center him
+
+He's down in the lower right corner. How did that happen? Because the default positioning is to place the top-left corner of the image at that coordinate.
+
+How do we fix it? 
+
+We add one line to the create function, right after where we add the knight sprite.
+
+```javascript
+  knight.anchor.setTo(0.5, 0.5);
+```
+What does that do? That sets the anchor point from top left to halfway down and halfway through... the center of the image. So now Duane's center is at the screen's center.
+
+> The anchor point of an image is where it's "anchored" to the screen. If the anchor point is the top left corner and we were to rotate the image, it would rotate around that point.
+
+Save your `game.js` file.
+
+Now reload your web page and see that Duane is one centered dude.
+
+But just getting an image on the screen is child's play. I can do it with a Sharpie without even turning on the computer. We want him to move.
+
+### Let's move Duane!
+
+If we were writing this game from scratch, we'd now be setting up a game loop with frame animation, setting how many pixels Duane would move per frame, and then redrawing the canvas every frame.
+
+Instead, with Phaser, we just enable Phaser's arcade physics for Duane and give him a little push by adding two lines to the create function. It should look like this.
+
+
+
+
+
+
 
 [ basic objects, game states, add an image (preload, position), images (all square, but using transparency allows any shape), make it move in an automated way, make it bounce off the walls, make it go across-out-back-in-other-side, make it respond to input, create a win condition where you guide it to a corner]
 
