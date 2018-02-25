@@ -129,30 +129,33 @@ The 4th argument is the game's parent object. In this case, we're passing nothin
 
 The 5th argument is actually an object. It's written in Object Literal Notation, which is a great way for quickly defining an object. In this simple configuration object, we're telling the game object that the code for preloading will be in a function called "preload," and the code to "create" the game (setting up a whole bunch of its details) will be in a function called "create." 
 
-So, let's preload our image by adding a preload function to the `window.onload()` function. And if you're wondering... yes... functions can contain other functions.
+So, let's create a knight variable that's global to this `window.onload()` function so it can be used by all of the functions in it. Then we'll preload our image by adding a `preload()` function to the `window.onload()` function. And if you're wondering... yes... functions can contain other functions.
 
 ```javascript
+var knight;
+
 function preload(){
   game.load.image('knight', '/week1/assets/gameart/Walk%20(1).png');
 }
 ```
 
-We're telling it to load an image we'll call "knight" and giving it the location where the image lives. The image is "Walk (1).png," because it's the first frame of a 10-frame walk animation we'll hopefully get to today. If we don't get to it in the workshop, it's still in this doc and we'll go over it again in the Space Invaders clone we'll build in Week 3.
+We're telling it to load an image we'll call "knight" and giving it the location where the image lives. The image is "Walk (1).png," because it's the first frame of a 10-frame walk animation we'll use in our platformer.
 
-And to be nice, we'll point out we got our knight sprites from [gameart2d.com](https://www.gameart2d.com/the-knight-free-sprites.html).  Duane (Sir Duane, actually, but his friends don't have to be formal) might not be as chunky and pixelated as we might hope for retro game art, but we can have a little polish on the platformer we'll make later on.
+To give credit where it is due, we got our knight friend from [gameart2d.com](https://www.gameart2d.com/the-knight-free-sprites.html).  Duane (Sir Duane, actually, but his friends don't have to be formal) might not be as chunky and pixelated as we might hope for retro game art, but since we are living in the future, not everything has to feel like the 80s. We can have a *little* polish on the platformer we'll make later on.
 
 Last, in our "create" function, we'll add the Duane to the game, making our whole game.js file look like this.
 
 ```javascript
 window.onload = function() {
   var game = new Phaser.Game(900, 700, Phaser.AUTO, '', { preload: preload, create: create });
+  var knight;
   
   function preload(){
     game.load.image('knight', '/week1/assets/gameart/Walk%20(1).png');
   }
 
   function create(){
-    var knight = game.add.sprite(game.world.centerX, game.world.centerY, 'knight');  
+    knight = game.add.sprite(game.world.centerX, game.world.centerY, 'knight');  
   } 
 }
 ```
@@ -188,11 +191,90 @@ If we were writing this game from scratch, we'd now be setting up a game loop wi
 
 Instead, with Phaser, we just enable Phaser's arcade physics for Duane and give him a little push by adding two lines to the create function. It should look like this.
 
+```javascript
+function create(){
+  knight = game.add.sprite(game.world.centerX, game.world.centerY, 'knight');
+  
+  knight.anchor.setTo(0.5, 0.5);
+  
+  game.physics.enable(knight, Phaser.Physics.ARCADE);
+  
+  knight.body.velocity.x=150;
+}
+```
 
+Save your game.js file and refresh the game. What happens?
 
+Duane is moving to your right... and then disappears off the screen. In the universe of the game, he's still going, just not in any part of the game you can see.
 
+### Introducing updates
 
+The `create()` function just sets the stage for the game. The update function is what runs every frame after the game is created and starts running. To keep Duane from disappearing off into the great unseen, we'll need to check where he is, and if he's going off the screen, we can deal with it.
 
+Remember how we had that object in the game object creation that told the game where to find the preload and create code. Let's add a pointer to the update code to it, simply by adding `update: update` to it and creating an update function.
 
-[ basic objects, game states, add an image (preload, position), images (all square, but using transparency allows any shape), make it move in an automated way, make it bounce off the walls, make it go across-out-back-in-other-side, make it respond to input, create a win condition where you guide it to a corner]
+About now, your game.js file should look like this:
+
+```javascript
+window.onload = function() {
+  var knight;
+  var game = new Phaser.Game(900, 700, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+ 
+  function preload(){
+    game.load.image('knight', '/week1/assets/gameart/Walk%20(1).png');
+  }
+
+  function create(){
+    knight = game.add.sprite(game.world.centerX, game.world.centerY, 'knight');
+    
+    knight.anchor.setTo(0.5, 0.5);
+    
+    game.physics.enable(knight, Phaser.Physics.ARCADE);
+
+    knight.body.velocity.x=150;    
+  }
+  
+  function update(){    
+  }
+  
+}
+```
+
+We can then add one line of code to the `update()` function to turn on world wrapping. 
+
+```javascript
+  function update(){
+    game.world.wrap(knight); 
+  }
+```
+
+In simple terms, world wrapping is a set of rules that basically asks "did this image move off the screen," and if it did, it pops it back in on the other side. You can tweak various arguments, but the bare minimum is to simply turn it on for your image. This is another nice thing that the framework handles for you.
+
+It's not perfect though. If you wanted it to wrap precisely, so the moment Duane's sword point went out one side, it started coming in the other, you'd have to cut the wrapping and replace it with some more complex code that actually uses two Duanes.
+
+### More updating fun
+
+Now that we can regularly check for things, what else could we check for? Maybe a keypress to control Duane... like an arrow key? Another thing the framework can do for you is check if a "cursor" key like an arrow is pressed.
+
+So to get the state of the cursors on each update, we can create a `cursors` object in the `update()` function.
+
+    cursors = game.input.keyboard.createCursorKeys();
+
+First we'll set the knight's velocity to 0, so he stands still if we're not pressing a key. Then we can check the cursor object and handle the keys that matter to us.
+
+        knight.body.velocity.x = 0;
+        if (cursors.left.isDown)
+        {
+            knight.body.velocity.x = -150;
+        }
+        else if (cursors.right.isDown)
+        {
+            knight.body.velocity.x = 150;
+        }
+
+Note how we have a condition for if left is down, then an "else if" for right. That prevents them from competing with each other. If left and right were pressed at the same time, left would win.
+
+### Things to try
+
+Try making Duane move faster or slower. Try making Duane move up and down. Try combining directions so he can move in a diagonal. If you're really feeling adventurous, try Duane's `scale.x` property and `scale.setTo` method to try to change his direction (hint, to flip him, multiply his X scale by -1). You get extra street cred if you Google anything you're stuck on instead of asking a mentor for help.
 
