@@ -1,6 +1,5 @@
 var game;
 
-
 window.onload = function() {
   game = new Phaser.Game(650, 650, Phaser.AUTO, '', { preload: preload, create: create  });
   var music;
@@ -8,7 +7,6 @@ window.onload = function() {
 
   function preload(){
     //preload the sounds
-
     game.load.audio('tone1', 'tone1.mp3');
     game.load.audio('tone2', 'tone2.mp3');
     game.load.audio('tone3', 'tone3.mp3');
@@ -23,13 +21,17 @@ window.onload = function() {
     music = game.add.audio('tone1');
 	
     /* To have it fade in and out, we add a function for when the fade is 
-       complete. The fade in brings the volume to 1. We check if volume is 1.
-       If so, we play the fade out. For a good length the fade out takes twice 
-       as long */
+       complete. The fade in brings the volume to 1. We check if volume 
+       is 1. If so, we play the fade out. For a good length the fade out 
+       takes twice as long. To ensure that the music stops playing 
+       (even though the volume's faded out'), we stop it when the fade
+       out happens  */
 
      music.onFadeComplete.add(function(item,vol){
         if(vol === 1){
         music.fadeOut(fadeLength*2);
+      } else {
+        music.stop();
       }
     });
 	
@@ -46,20 +48,18 @@ window.onload = function() {
     var text2 = this.game.add.text(10,70,"Play Medium Sound", style);
     var text3 = this.game.add.text(10,130,"Play Short Sound", style);
 
-    // Each text item needs to be enabled as an input element and given a function for what happens when it's pressed
+    // Each text item needs to be enabled as an input element 
+    // and given a function for what happens when it's pressed
     text1.inputEnabled = true;
-    text1.events.onInputDown.add(longSound, this);
+    text1.events.onInputDown.add(function(){playMySound(600);}, this);
 
     text2.inputEnabled = true;
-    text2.events.onInputDown.add(mediumSound, this);
+    text2.events.onInputDown.add(function(){playMySound(400);}, this);
 
     text3.inputEnabled = true;
-    text3.events.onInputDown.add(shortSound, this);
+    text3.events.onInputDown.add(function(){playMySound(200);}, this);
   }
 
-  function longSound(){playMySound(600);}
-  function mediumSound(){playMySound(400);}
-  function shortSound(){playMySound(250)};
 
   function playMySound(fade){
      // check if the music is already playing, and do nothing if it is 

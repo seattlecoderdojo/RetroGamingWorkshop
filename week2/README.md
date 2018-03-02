@@ -59,22 +59,28 @@ Because as the game speeds up, the sounds get shorter, I needed to either make a
 
 Because simply starting and stopping can feel abrupt, I decided to use Phaser's built in functionality to fade in and fade out sounds. Let's look at the code.
 
-```JavaScript {.line-numbers }
+```JavaScript
 var game;
 
 window.onload = function() {
   game = new Phaser.Game(650, 650, Phaser.AUTO, '', { preload: preload, create: create  });
   var music;
   var fadeLength = 0;
+```
+This is our standard opening, setting up the game object with size, renderer, a few known functions, and a couple of global variables.
 
+```JavaScript
   function preload(){
     //preload the sounds
-
     game.load.audio('tone1', 'tone1.mp3');
     game.load.audio('tone2', 'tone2.mp3');
     game.load.audio('tone3', 'tone3.mp3');
     game.load.audio('tone4', 'tone4.mp3');
   }
+```
+Pre-loading the sounds. At this point, it should be pretty much like you remember from last week. We use the game object's load method, but this time with audio. We give it a name for the audio object and the location of the file. Because our test script is in the same folder with the audio files, we can just use the file names.
+
+```JavaScript
 
   function create(){
     //set the text on the screen to get the font loading
@@ -84,20 +90,31 @@ window.onload = function() {
     music = game.add.audio('tone1');
 	
     /* To have it fade in and out, we add a function for when the fade is 
-       complete. The fade in brings the volume to 1. We check if volume is 1.
-       If so, we play the fade out. For a good length the fade out takes twice 
-       as long */
+       complete. The fade in brings the volume to 1. We check if volume 
+       is 1. If so, we play the fade out. For a good length the fade out 
+       takes twice as long. To ensure that the music stops playing 
+       (even though the volume's faded out'), we stop it when the fade
+       out happens  */
 
      music.onFadeComplete.add(function(item,vol){
         if(vol === 1){
         music.fadeOut(fadeLength*2);
+      }  else {
+        music.stop();
       }
     });
-	
+
      //we give the text a brief time to load before writing it
     setTimeout(setText,800); 
   }
+```
+We do a teeny tiny add text just to get the font loading since Phaser 2 doesn't have the best font handling. We set our tone, now that we've loaded it, as a game audio object which is what we'll use for manipulating it.
 
+Now it might seem a little backward, but we need to add some functionality to that audio object which handles when the music fade (in or out) completes. So we're technically putting in code to handle the end of a tone before we put in code to handle the start. The comment in the code explains what we're doing.
+
+And since we couldn't quite pre-load the font, we'll just wait 8/10ths of a second to give it a chance to load. At this point, we call a new function called `setText`. 
+
+```JavaScript
   function setText(){
     // Set a style for the font, similar to CSS
     var style = {font: "45px coiny", fill: "#ffffff"};
@@ -107,21 +124,21 @@ window.onload = function() {
     var text2 = this.game.add.text(10,70,"Play Medium Sound", style);
     var text3 = this.game.add.text(10,130,"Play Short Sound", style);
 
-    // Each text item needs to be enabled as an input element and given a function for what happens when it's pressed
+    // Each text item needs to be enabled as an input element 
+    // and given a function for what happens when it's pressed
     text1.inputEnabled = true;
-    text1.events.onInputDown.add(longSound, this);
+    text1.events.onInputDown.add(function(){playMySound(600);}, this);
 
     text2.inputEnabled = true;
-    text2.events.onInputDown.add(mediumSound, this);
+    text2.events.onInputDown.add(function(){playMySound(400);}, this);
 
     text3.inputEnabled = true;
-    text3.events.onInputDown.add(shortSound, this);
+    text3.events.onInputDown.add(function(){playMySound(200);}, this);
   }
+```
+We set a style for the text and add three text elements to the screen. We then have to enable them as input objects and set a handler for the events we want to respond to. We want to respond to an "input down" (basically a mouse click or a tap). When that happens, we call `playMySound` with a number as an argument. That number is how many thousandths of a second the fade-in should be (and the fade-out will be double).
 
-  function longSound(){playMySound(600);}
-  function mediumSound(){playMySound(400);}
-  function shortSound(){playMySound(250)};
-
+```JavaScript
   function playMySound(fade){
      // check if the music is already playing, and do nothing if it is 
      if(music.isPlaying){
@@ -132,13 +149,10 @@ window.onload = function() {
       music.fadeIn(fade);
   }
 }
-
 ```
-And since you already learned the basics of putting a picture on the screen, we'll take a moment to go through a simple game I coded up the other day.
+Last we have the function that starts the sound playing. First we check to see if it already is, because if it is, we don't want it to start over. We want it to finish before another starts playing. We set the global fadeLength to the fade length we set (so the fade-out knows what value to use) and we start playing with a fade in.
 
-
-
-
+Try changing the tone in the pre-load and the play lengths. About the max you can have is 700 because the tone is about 2.1 seconds long.
 
 
 ## A quick refresher
