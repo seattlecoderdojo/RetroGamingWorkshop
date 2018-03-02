@@ -36,11 +36,15 @@ We're going to make this game, but we can't call it Simon, because Hasbro owns t
 
 To make this game, we'll need... 
 
+- Assets
 - An intro screen
 - A game screen
-- The necessary game art
 - And code!
 
+
+## Let's look at our assets
+
+You'll find our button images in the 
 
 
 ## A quick refresher
