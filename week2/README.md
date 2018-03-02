@@ -76,3 +76,18 @@ window.onload = function(){
 
 This is the base skeleton of the "Move Duane" game we made last week. Not much of a game, but we'll get into some more game mechanics to make games more fun as we move along.
 
+States:
+
+​	Boot
+
+​	Loading
+
+​	Pending
+
+​	Play
+
+​	Instructions
+
+​	Game Over
+
+

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="672.76715"
+   height="238.48143"
+   viewBox="0 0 178.00297 63.098213"
+   version="1.1"
+   id="svg4568"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   sodipodi:docname="playbutton.svg"
+   inkscape:export-filename="C:\Users\gregb\OneDrive\CoderDojo\DojoClass\RetroGamingWorkshop\week2\assets\gameart\playbutton.png"
+   inkscape:export-xdpi="43.450001"
+   inkscape:export-ydpi="43.450001">
+  <defs
+     id="defs4562" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="286.42213"
+     inkscape:cy="-135.04499"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="5"
+     fit-margin-left="5"
+     fit-margin-right="5"
+     fit-margin-bottom="5"
+     units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4565">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-14.563989,-50.004461)">
+    <rect
+       style="opacity:1;fill:#0000ff;fill-opacity:0.98895024;stroke:#ffffff;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect5119"
+       width="172.35715"
+       height="57.452377"
+       x="17.386906"
+       y="53.361916"
+       ry="28.726189" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45.63702774px;line-height:1.25;font-family:'Air Conditioner';-inkscape-font-specification:'Air Conditioner, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffaaaa;fill-opacity:1;stroke:none;stroke-width:1.14095044"
+       x="30.241413"
+       y="94.050392"
+       id="text5123"><tspan
+         sodipodi:role="line"
+         id="tspan5121"
+         x="30.241413"
+         y="94.050392"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45.63702774px;font-family:'Air Conditioner';-inkscape-font-specification:'Air Conditioner, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffaaaa;stroke-width:1.14095044">PLAY</tspan></text>
+    <text
+       id="text5127"
+       y="92.992058"
+       x="31.299747"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45.63702774px;line-height:1.25;font-family:'Air Conditioner';-inkscape-font-specification:'Air Conditioner, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.14095044"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45.63702774px;font-family:'Air Conditioner';-inkscape-font-specification:'Air Conditioner, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:1.14095044"
+         y="92.992058"
+         x="31.299747"
+         id="tspan5125"
+         sodipodi:role="line">PLAY</tspan></text>
+  </g>
+</svg>
