@@ -2,8 +2,30 @@
 <html>
   <head>
     <script type="text/javascript" src="../scripts/phaser.js"></script>
+    <script type="text/javascript" src="scripts/boot.js"></script>
+    <script type="text/javascript" src="scripts/load.js"></script>
+    <script type="text/javascript" src="scripts/menu.js"></script>
+    <script type="text/javascript" src="scripts/play.js"></script>
+    <script type="text/javascript" src="scripts/help.js"></script>
+    <script type="text/javascript" src="scripts/win.js"></script>
+    <script type="text/javascript" src="scripts/lose.js"></script>
     <script type="text/javascript" src="scripts/game.js"></script>
+    <style>
+      /*
+        ADDING OUR CHOSEN DISPLAY FONT HERE IN THE CSS
+        If our CSS was more complex, we'd separate it out
+        into an external stylesheet. 
+      */
+      @font-face {
+      font-family: "coiny";
+      font-style: normal;
+      font-weight: 400;
+      src: url("../fonts/Coiny-Regular.ttf");
+      }
+    </style>    
   </head>
   <body>
+    <p text-align="center"><h1>Dojo Tones Game</h1></p>
+    <div id="gamediv" style="height:803px;width:700px;padding:0px; margin-left:auto; margin-right:auto;"></div>
   </body>
 </html>

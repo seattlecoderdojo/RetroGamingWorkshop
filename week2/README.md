@@ -59,6 +59,36 @@ Because as the game speeds up, the sounds get shorter, I needed to either make a
 
 Because simply starting and stopping can feel abrupt, I decided to use Phaser's built in functionality to fade in and fade out sounds. Let's look at the code.
 
+You'll find the code in the `week2/assets/sounds/` folder. The `index.html` file is in there just to keep people from looking at the contents of the directory. The important files are `soundtest.html` (which is the one you'll want to run to play it) and `game.js`. The files are in here because they're just for a test and not actually part of the game.
+
+The HTML file is just like the other ones you're used to, except for one thing.
+
+```html
+<html>
+  <head>
+    <script src="../../../../scripts/phaser.js"></script>
+    <script src="game.js"></script>
+    <style>
+      /*
+        ADDING OUR CHOSEN DISPLAY FONT HERE IN THE CSS
+        If our CSS was more complex, we'd separate it out
+        into an external stylesheet. 
+      */
+      @font-face {
+      font-family: "coiny";
+      font-style: normal;
+      font-weight: 400;
+      src: url("../fonts/Coiny-Regular.ttf");
+      }
+    </style>
+  </head>
+  <body>
+  </body>
+</html>
+```
+
+Aside from the base skeleton, we've added in a style section. Using CSS we define the font so the browser knows where to load it from, because there's no option to load it directly in Phaser 2.
+
 ```JavaScript
 var game;
 
@@ -83,7 +113,7 @@ Pre-loading the sounds. At this point, it should be pretty much like you remembe
 ```JavaScript
 
   function create(){
-    //set the text on the screen to get the font loading
+    //set the text on the screen to get the font buffering into memory
     this.game.add.text(0, 0, "hack", {font:"1px coiny", fill:"#FFFFFF"});
 
     //set our tone
@@ -152,20 +182,64 @@ We set a style for the text and add three text elements to the screen. We then h
 ```
 Last we have the function that starts the sound playing. First we check to see if it already is, because if it is, we don't want it to start over. We want it to finish before another starts playing. We set the global fadeLength to the fade length we set (so the fade-out knows what value to use) and we start playing with a fade in.
 
-Try changing the tone in the pre-load and the play lengths. About the max you can have is 700 because the tone is about 2.1 seconds long.
+Try changing the tone in the pre-load and the play lengths. About the maximum length you can have is 700 because the tone is about 2.1 seconds long.
 
 
-## A quick refresher
+## Making our game
 
-Let's go into the week 2 folder. You'll find the same structure: 
+Let's go into the main week 2 folder. You'll find the same structure: 
 
-- an index.html file that's the same as last week's and loads the game.js folder
+- an index.html file similar to the one we used in the sound test, but even more complex.
 - a readme.md file, which is this document you're reading.
-- a scripts directory with your game.js file
-- an assets directory with gameart and readme directories
-  - the readme directory contains the graphics used in this document.
+- a scripts directory with your game.js file and a few others
+- an assets directory with your game art, fonts, and sounds for this game.
 
-Let's look at the code in the game.js file
+#### Let's examine our `index.html` file first
+
+```html
+<html>
+  <head>
+    <script type="text/javascript" src="../scripts/phaser.js"></script>
+    <script type="text/javascript" src="scripts/boot.js"></script>
+    <script type="text/javascript" src="scripts/load.js"></script>
+    <script type="text/javascript" src="scripts/menu.js"></script>
+    <script type="text/javascript" src="scripts/play.js"></script>
+    <script type="text/javascript" src="scripts/help.js"></script>
+    <script type="text/javascript" src="scripts/win.js"></script>
+    <script type="text/javascript" src="scripts/lose.js"></script>
+    <script type="text/javascript" src="scripts/game.js"></script>
+```
+Whoa, what's with all of the .js files? We're going to use Phaser's states functionality to help us track the different game states and we'll use a different file for each state. We don't have to. In fact, all those could go into one file. But by keeping them in different files, it helps us organize our code.
+
+What is a state? The names sort of describe what they do. The menu state displays the menu. The play state is when you're playing the game. And so on...
+
+But why is `game.js` last in the list? It will contain references to all the other states. We need to load it last so all those states are in memory *before* it starts referencing them.
+
+```html
+    <style>
+      /*
+        ADDING OUR CHOSEN DISPLAY FONT HERE IN THE CSS
+        If our CSS was more complex, we'd separate it out
+        into an external stylesheet. 
+      */
+      @font-face {
+      font-family: "coiny";
+      font-style: normal;
+      font-weight: 400;
+      src: url("../fonts/Coiny-Regular.ttf");
+      }
+    </style>    
+  </head>
+  <body>
+    <div id="gamediv" style="height:803px;width:700px;padding:0px; margin-left:auto; margin-right:auto;"></div>
+  </body>
+</html>
+```
+The other change we're going to see is the `div` element between the body tags, we've given it some simple styling to make it as tall and wide as our game board and center it in the browser. We'll refer to it again in a moment.
+
+#### Let's drop into the scripts folder 
+
+First we'll look at the code in the game.js file. Although we want the interpreter to load the other files first so it knows they exist, we know that already, so we can look at things in a more logical order.
 
 ```javascript
 window.onload = function(){
