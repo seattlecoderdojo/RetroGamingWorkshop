@@ -1,19 +1,16 @@
 window.onload = function(){
-  var game = new Phaser.Game(700, 803, Phaser.AUTO, 'gamediv', { preload: preload, create: create, update: update });
+  var game = new Phaser.Game(700, 803, Phaser.AUTO, 'gamediv');
 
-  function preload(){
+  //adding our states - 'name', then the actual function that handles it.
+  game.state.add('boot', bootState);
+  game.state.add('load', loadState);
+  game.state.add('menu', menuState);
+  game.state.add('play', playState);
+  game.state.add('help', helpState);
+  game.state.add('win', wintate);
+  game.state.add('lose', loseState);
+  
 
-  }
-
-  function create(){
-
-  }
-
-  function update(){
-
-  }
-
-
-
+  game.state.start('load');
 
 }
