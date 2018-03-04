@@ -3,25 +3,21 @@ var playState = {
     //Set some game state variables
 
     init: function(){
-        var ps = playState;
-        ps.currentPanel = '';
-        ps.myTurn = true;
-        ps.myFade = 0;
-        ps.myDelay = 300;
-        ps.myTimeout = 2980;
-        ps.speedDrop = 40
-        ps.tones = [];
-        ps.title = {};
-        ps.label= {};
-        ps.panels = [];
-        ps.sprite_size = 300;
-        ps.gameTracker = [];
-        ps.toneCounter = 0;
-        ps.deathClock = {};
-        ps.maxTones = 4; // this is the maximum number of tones in a game
-        ps.myFade = 440;
-        ps.myTimeout = 2500;
-        ps.gameTracker = [];
+        this.myTurn = true;
+        this.myDelay = 300; // initial time between played tones
+        this.myTimeout = 2980; // initial timeout (time allowed between tiles)
+        this.myFade = 440; // initial fade in/out length
+        this.speedDrop = 40; // each round, the fade gets this much shorter
+        this.tones = []; // holds the sounds
+        this.panels = []; // holds the panel images
+        this.gameTracker = []; //holds the current sequence
+        this.toneCounter = 0; // counts through tones played
+        this.label= {}; // holds the graphic object with the message
+        this.sprite_size = 300; // size of panels
+        this.deathClock = {}; // holds the timeout object
+        this.maxTones = 4; // this is the maximum number of tones in a game
+        this.myTimeout = 2500;
+        this.gameTracker = [];
     },
     
     create: function(){
@@ -32,7 +28,7 @@ var playState = {
          this.title = game.add.text(20,10,'Memory Tones', {font: '70px coiny', fill: '#ffffff'});
          this.title.x = (game.width - this.title.width)/2;
 
-        //add the boxes
+        //add the boxes into an array
         this.panels["panel1-lit"] = game.add.sprite(45, 180, 'panel1-lit'); 
         this.panels["panel1-lit"].width = 300; 
         this.panels["panel1-lit"].height =300; 
@@ -65,7 +61,7 @@ var playState = {
         this.panels["panel4"].width = 300; 
         this.panels["panel4"].height =300; 
 
-        //set our audio sprites
+        //set our audio sprites in an array
         this.tones["panel1"] = game.add.audio('panel1');
         this.tones["panel2"] = game.add.audio('panel2');
         this.tones["panel3"] = game.add.audio('panel3');
@@ -83,7 +79,9 @@ var playState = {
 
        // set stops on our tones
         for(var element in this.tones){
+            //make sure the element is an audio sprite
            if(this.tones[element].hasOwnProperty('isPlaying')){
+              //run the addFade function on the tone
                this.addFade(this.tones[element]);
              }
         }
@@ -96,13 +94,13 @@ var playState = {
     
     startTurn: function(){
         
-        if(this.myTurn){
+        if(this.myTurn){ // check if it's the computer's turn
             this.myFade -= this.speedDrop; // makes each sequence play notes shorter
-            this.myDelay *= .9166666;
+            this.myDelay *= .9166666; // shortens delay by 1/12th of current delay
             this.setLabel("I'll play some sounds");
             this.playNextSequence();
-        } else {
-            this.myTimeout *= .9366666;
+        } else { // it's the player's turn
+            this.myTimeout *= .9366666; // reduce the amount of time the player has to click/tap a panel
             this.setLabel("Now Your Turn");
             this.startPlayerTurn();
         }
@@ -117,17 +115,16 @@ var playState = {
         this.gameTracker.push("panel" + newTone);
 
         //play the sequence()
-        this.toneCounter = 0;
+        this.toneCounter = 0; // initialize the sequence tracking counter
         setTimeout(this.playNextTone, this.myDelay);
     },
 
 
     playNextTone: function(){
-       var ps = playState;
-        if(ps.toneCounter < ps.gameTracker.length){
-            var tonekey = ps.gameTracker[ps.toneCounter];
-            ps.panels[tonekey].moveDown();
-            ps.currentPanel = tonekey;
+       var ps = playState; // use ps because setTimeout changes the context of "this"
+        if(ps.toneCounter < ps.gameTracker.length){ // are there tones left to play
+            var tonekey = ps.gameTracker[ps.toneCounter]; 
+            ps.panels[tonekey].moveDown(); // move the solid panel under the lit
             ps.toneCounter += 1;
             ps.playTone(tonekey);
         } else {
@@ -138,40 +135,45 @@ var playState = {
     
     
     startPlayerTurn: function(){
-        this.toneCounter = 0;
+        this.toneCounter = 0; // initialize the sequence tracking number
+        // the deathClock is a timer that will automatically end the game
+        // if you wait too long to click a panel
         this.deathClock = setTimeout(this.gameFail, this.myTimeout);
     },
     
   
     setLabel: function(labelText){
-        if(this.label.hasOwnProperty('blendMode')){
-            this.label.destroy(); // if there is a label, clear it
+        if(this.label.hasOwnProperty('blendMode')){ 
+            // ^^^ check if there's a text object in the label
+            this.label.destroy(); // clear the label
         }
         this.label = game.add.text(10, this.title.height + 20, labelText, {font: '40px coiny', fill: '#ffffff'})
         this.label.x = (game.width - this.label.width)/2;
     },
 
 
-
     panelClick: function(e){
+        // this.checkSounds makes sure nothing's playing
         if((!this.checkSounds()) && (!this.myTurn) ){ 
             // if it's not the machine's turn and nothing else is playing
-            // check to make sure the tone's the right one
             if(this.goodTone(e.key)){
+                // ^^^ check to make sure the tone's the right one
+                // we hit a good tone, stop the deathClock... for now
                 clearTimeout(playState.deathClock);
-                this.panels[e.key].moveDown();
-                this.currentPanel = e.key;
+                this.panels[e.key].moveDown(); // move the solid panel under the lit
                 this.playTone(e.key);
             } else {
                 this.gameFail();
             }
         } else {
+            // you've clicked a panel, but that click is rejected
             console.log('Either something is playing or it is not your turn.')
         }
     },
   
     goodTone: function(key){
         if(key == this.gameTracker[this.toneCounter]){
+            //advance the counter and confirm
             this.toneCounter += 1;
             return true;
         } else {
@@ -192,24 +194,30 @@ var playState = {
     
         
     addFade: function(tone){
+      //add a function to run when a fade in or out completes on this tone
       tone.onFadeComplete.add(function(item,vol){
-        if(vol === 1){
+        if(vol === 1){ // if at full volume (fade-in completed), start fade-out
           tone.fadeOut(playState.myFade * 2);
       } else {
-          tone.stop();
-          playState.panels[tone.key].moveUp();
-          if(playState.myTurn){
+          //fade out is completed
+          tone.stop(); // make sure the done is stopped
+          playState.panels[tone.key].moveUp(); //move solid panel back above the lit
+          if(playState.myTurn){ // if it's the computer's turn, keep playing sequence
               // play the next tone in the sequence
               setTimeout(playState.playNextTone, playState.myDelay);
           } else {
-              //check win conditions and set death clock
+              //players turn: check win conditions and set death clock
               if(playState.toneCounter == playState.maxTones){
-                  playState.tones["win"].play();
-                  game.state.start('win');
+                  //they completed the full length sequence set by maxTones and won the game
+                  playState.tones["win"].play(); // play the winning sound
+                  game.state.start('win'); // start the win state
               } else if (playState.toneCounter == playState.gameTracker.length){
+                  // if they completed the current sequence, but it was shorter than maxTones
+                  // start a new turn for the computer which will add a tone to the sequence
                   playState.myTurn = true;
                   playState.startTurn();
               } else {
+                  // start the deathClock waiting for the next tone
                   playState.deathClock = setTimeout(playState.gameFail, playState.myTimeout);
               }
             }
@@ -219,6 +227,7 @@ var playState = {
   },
     
     checkSounds: function(){
+        //runs through all the tones in our array and makes sure none is playing
         var mydef = false;
         for (var i in playState.tones){
             if(this.tones[i].hasOwnProperty('isPlaying')){
@@ -231,6 +240,7 @@ var playState = {
     },
     
     gameFail: function(){
+        // what happens when you lose
         clearTimeout(playState.deathClock); // just in case the fail is a wrong tile
         console.log('game failed');
         playState.tones["fail"].play();

@@ -13,7 +13,7 @@ var winState =  {
           
           var instructions = "You WON!\n\nYou got " + playState.maxTones + " tones.\n\nWanna play again?"
           
-          var style = { font: '44pt Coiny', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 560 };
+          var style = { font: '44pt coiny', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 560 };
           var helptext = game.add.text(70, 270, instructions, style);
   }
 

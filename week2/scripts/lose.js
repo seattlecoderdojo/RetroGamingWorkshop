@@ -10,9 +10,9 @@ var loseState = {
           graphics.drawRect(50, 250, 600, 300);
           graphics.endFill();
           
-          var instructions = "We're sorry, but you didn't get to " + playState.maxTones + " tones.\n\nKeep Practicing and feel free to try again."
+          var instructions = "We're sorry, but you didn't get to " + playState.maxTones + " tones.\n\nKeep practicing and feel free to try again."
           
-          var style = { font: '28pt Coiny', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 560 };
+          var style = { font: '28pt coiny', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 560 };
           var helptext = game.add.text(70, 270, instructions, style);
   }
 } 
