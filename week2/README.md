@@ -200,7 +200,6 @@ Let's go into the main week 2 folder. You'll find the same structure:
 <html>
   <head>
     <script type="text/javascript" src="../scripts/phaser.js"></script>
-    <script type="text/javascript" src="scripts/boot.js"></script>
     <script type="text/javascript" src="scripts/load.js"></script>
     <script type="text/javascript" src="scripts/menu.js"></script>
     <script type="text/javascript" src="scripts/play.js"></script>
@@ -235,6 +234,8 @@ But why is `game.js` last in the list? It will contain references to all the oth
   </body>
 </html>
 ```
+We've seen the style element in the header from the tones tester. 
+
 The other change we're going to see is the `div` element between the body tags, we've given it some simple styling to make it as tall and wide as our game board and center it in the browser. We'll refer to it again in a moment.
 
 #### Let's drop into the scripts folder 
@@ -243,37 +244,196 @@ First we'll look at the code in the game.js file. Although we want the interpret
 
 ```javascript
 window.onload = function(){
-  var game = new Phaser.Game(900, 700, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+  game = new Phaser.Game(700, 803, Phaser.AUTO, 'gamediv');
 
-  function preload(){
+  //adding our states - 'name', then the actual function that handles it.
+  game.state.add('load', loadState);
+  game.state.add('menu', menuState);
+  game.state.add('play', playState);
+  game.state.add('help', helpState);
+  game.state.add('win', winState);
+  game.state.add('lose', loseState);
 
-  }
-
-  function create(){
-
-  }
-
-  function update(){
-
-  }
-
+  game.state.start('load');
 }
 ```
 
-This is the base skeleton of the "Move Duane" game we made last week. Not much of a game, but we'll get into some more game mechanics to make games more fun as we move along.
+This is different from the base skeleton of the "Move Duane" game we made last week. There are no `preload`, `create`, or `update` functions. That's because each state can contain its own. This can be good for a high-end game where levels load independently instead of trying to load everything for all levels into memory at once.
 
-States:
+We have six states: 
 
-​	Boot
+1. load - we don't have a complex game, so we'll load all our content here.
+2. menu - the main screen with options for playing or help
+3. play - the state in which the game runs
+4. help - the help screen that explains the game
+5. win - the screen displayed if the player wins
+6. lose - the screen displayed if the player loses
 
-​	Loading
+I've already pre-populated this in the files you downloaded. There's no point in making you type or copy them. But note that we add states to the game with `game.state.add`. It takes two arguments. Much like with our sprites or other assets when we're loading them, it takes an alias and a pointer. The pointer is to an object that will be used when the `game.state.start` function is fed its alias.
 
-​	Pending
+And speaking of loading sprites, let's take a quick peek at the `load.js` file.
 
-​	Play
+#### **load.js**
 
-​	Instructions
+``` javascript
 
-​	Game Over
+    preload: function(){
 
+      // Quick bit of text to let people know the game is loading.
+      game.add.text(100,100,'Loading assets', {font: '50px coiny', fill: '#ffffff'});
+      
+      //let's load our sounds
+      game.load.audio('tone1', 'assets/sounds/tone1.mp3');
+      game.load.audio('tone2', 'assets/sounds/tone2.mp3');
+      game.load.audio('tone3', 'assets/sounds/tone3.mp3');
+      game.load.audio('tone4', 'assets/sounds/tone4.mp3');
+      game.load.audio('fail', 'assets/sounds/fail.mp3');
+      game.load.audio('win', 'assets/sounds/270528__littlerobotsoundfactory__jingle-win-00.mp3');
+      
+      //let's load our graphics
+      game.load.image('panel1', 'assets/gameart/panel1.png')
+      game.load.image('panel1-lit', 'assets/gameart/panel1-lit.png')
+      game.load.image('panel2', 'assets/gameart/panel2.png')
+      game.load.image('panel2-lit', 'assets/gameart/panel2-lit.png')
+      game.load.image('panel3', 'assets/gameart/panel3.png')
+      game.load.image('panel3-lit', 'assets/gameart/panel3-lit.png')
+      game.load.image('panel4', 'assets/gameart/panel4.png')
+      game.load.image('panel4-lit', 'assets/gameart/panel4-lit.png')
+      game.load.image('playbutton', 'assets/gameart/playbutton.png')
+      game.load.image('helpbutton', 'assets/gameart/helpbutton.png')
+      game.load.image('background', 'assets/gameart/pixabay-lattice.jpg')
+    },
+
+    create: function(){    
+        //let's start the menu
+        game.state.start('menu');
+    }
+
+ }
+```
+
+We're loading the tones for our four panels, a failure tone, a win sound, the four panels in plain and lit states, our buttons, and a background for our gameboard. Again, there's no point in me making you type all this in.
+
+But then we get to your `menu.js` file. This is where we're actually starting to put stuff on the screen.
+
+#### **menu.js**
+
+```javascript
+var menuState = {    
+  create: function(){
+
+  }    
+}
+```
+
+Basically, we're just creating the menuState object using object literal notation (which we introduced last week). In that object, we're setting up a create method which will be run first as the state is applied to the game. 
+
+When that state is applied, the game stage will be cleared and the loading message removed. So what do we want to do?
+
+If we wanted to change the background color, we could do that. Put the following line inside your `create` function.
+
+```game.stage.backgroundColor = "#FFDD22";```
+
+Try running the index.html file for week 2 and you should see a quick "loading" message on a black background that gets replaced with a garish colored screen.
+
+Obviously, we don't want to use that as our background color and last week a couple of you asked about using images as backgrounds. So I found a free image at Pixabay.org that wasn't horrible and made a background out of it.
+
+To add a background image, we just make it our first sprite. All other sprites will be drawn in the order they're placed, so everything will go on top of it.
+
+` game.add.sprite(0,0,'background');`
+
+Now we start adding other elements. First our title.
+
+```javascript
+var title = game.add.text(20,10,'Memory Tones', {font: '70px coiny', fill: '#ffffff'});
+title.x = (game.width - title.width)/2;
+```
+
+When we use the `game.add.text` function, it creates a text object and gives us back a pointer for that object. In the load screen, we didn't put a `var title =` in front of it the line adding the text, because we weren't going to do anything with it. But here we're doing something... centering the text.
+
+We do this by changing the title's x position to the game's width, minus the title text's width, divided by two. And since this is done programmatically, we can change the size of the text and experiment with the size of our title. Add those lines to your `create` and see what happens when you change the size of the text from 70px to whatever you want. It should stay centered.
+
+Change it back to 70px when you're ready to move forward.
+
+Next we'll add our "Play" and "Help" buttons. Again, we'll position them mathematically. That way if you want to change your background or the size/shape of the board, you'll get a better look.
+
+```
+   //set our button top position as 20px below the title
+   var buttontop = title.y + title.height + 20;
+   
+   //set a value of px between the edges of the buttons
+   var midbuffer = 50;
+   
+   //add the buttons to the game
+   play = game.add.sprite(20, buttontop , 'playbutton');
+   help = game.add.sprite(0, buttontop , 'helpbutton');
+
+   //get the centering for the buttons with their spacing
+   var sidebuffer = (game.width - (play.width + help.width + midbuffer))/2;
+   
+   //reposition the buttons
+   play.x = sidebuffer;
+   help.x = sidebuffer + play.width + midbuffer;
+```
+
+By adding the width of the two buttons and the spacing between them, we can center them as a group.
+
+Add this code to your `create` function. When you run it, you'll see the buttons added to your game board. 
+
+You can change the `midbuffer` value to see how changing the space between the buttons changes the look of the game board.
+
+Next, we sort of turn the buttons on, by setting their `inputEnabled` property to true, then setting a handler to do something when they're clicked, just like we did for the sound demo. But this time, the action will be loading a new stage.
+
+```       javascript
+//make them clickable!
+play.inputEnabled = true;
+help.inputEnabled = true;
+
+//handle their clicks
+play.events.onInputDown.add(function(){
+	game.state.start('play');
+}, this);
+
+help.events.onInputDown.add(function(){
+	game.state.start('help');
+}, this);
+```
+
+Let's go look at the help state, because it's going to be easier than the play state.
+
+#### **help.js**
+
+```javascript
+var helpState = {
+    
+   create: function(){
+        // since we'll duplicate a bunch of the menu state, we'll just run its create function
+        menuState.create();
+        
+        // Then we'll make a box to put the instructions in
+        var graphics = game.add.graphics();
+        graphics.lineStyle(2, 0xFFFFFF, 1);
+        graphics.beginFill(0x222222, 1);
+        graphics.drawRect(50, 250, 600, 500);
+        graphics.endFill();
+        
+        var instructions = "The game will light up boxes and play sounds in a sequence. When it's done, click those boxes to make those sounds in the same order. Each turn will have a longer sequence of boxes. \n\nGood Luck."
+        
+        var style = { font: '28pt Coiny', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 560 };
+        var helptext = game.add.text(70, 270, instructions, style);
+    }    
+}
+```
+
+Just like the other states, we create an object with it's name and then put functions in it.  But since we're just basically duplicating the menu screen with some instructions, we can literally just call the `menuState` object's `create` function to do all that work.
+
+The `graphics` object lets us draw a box. We set the style for the outer line, set a fill color, draw a rectangle, and end the filling process. Now we have a nice big dark grey rectangle for our help text to go in.
+
+We set the instruction text in a string, then set the style for the text. As you can see, we're adding a few elements to the style. We're setting an alignment, making sure it wraps instead of running off the right side of the screen, and telling it at what width it should wrap.
+
+And because we used the menu's creation code, we've still got the "Play" and "Help" buttons enabled.
+
+So next, we do our `playState` .
+
+#### play.js
 

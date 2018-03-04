@@ -1,0 +1,1 @@
+A full working set of scripts you can copy into your scripts folder to make the game work.
