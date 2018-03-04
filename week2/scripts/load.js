@@ -6,10 +6,10 @@ var loadState = {
     game.add.text(100,100,'Loading assets', {font: '50px coiny', fill: '#ffffff'});
     
     //let's load our sounds
-    game.load.audio('tone1', 'assets/sounds/tone1.mp3');
-    game.load.audio('tone2', 'assets/sounds/tone2.mp3');
-    game.load.audio('tone3', 'assets/sounds/tone3.mp3');
-    game.load.audio('tone4', 'assets/sounds/tone4.mp3');
+    game.load.audio('panel1', 'assets/sounds/tone1.mp3');
+    game.load.audio('panel2', 'assets/sounds/tone2.mp3');
+    game.load.audio('panel3', 'assets/sounds/tone3.mp3');
+    game.load.audio('panel4', 'assets/sounds/tone4.mp3');
     game.load.audio('fail', 'assets/sounds/fail.mp3');
     game.load.audio('win', 'assets/sounds/270528__littlerobotsoundfactory__jingle-win-00.mp3');
     
