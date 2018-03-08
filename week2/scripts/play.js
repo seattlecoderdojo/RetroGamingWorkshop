@@ -30,36 +30,36 @@ var playState = {
 
         //add the boxes into an array
         this.panels["panel1-lit"] = game.add.sprite(45, 180, 'panel1-lit'); 
-        this.panels["panel1-lit"].width = 300; 
-        this.panels["panel1-lit"].height =300; 
+        this.panels["panel1-lit"].width = this.sprite_size; 
+        this.panels["panel1-lit"].height = this.sprite_size; 
         
         this.panels["panel1"] = game.add.sprite(45, 180, 'panel1'); 
-        this.panels["panel1"].width = 300; 
-        this.panels["panel1"].height =300; 
+        this.panels["panel1"].width = this.sprite_size; 
+        this.panels["panel1"].height = this.sprite_size; 
                 
         this.panels["panel2-lit"] = game.add.sprite(355, 180, 'panel2-lit'); 
-        this.panels["panel2-lit"].width = 300; 
-        this.panels["panel2-lit"].height =300; 
+        this.panels["panel2-lit"].width = this.sprite_size; 
+        this.panels["panel2-lit"].height = this.sprite_size; 
         
         this.panels["panel2"] = game.add.sprite(355, 180, 'panel2'); 
-        this.panels["panel2"].width = 300; 
-        this.panels["panel2"].height =300; 
+        this.panels["panel2"].width = this.sprite_size; 
+        this.panels["panel2"].height = this.sprite_size; 
 
         this.panels["panel3-lit"] = game.add.sprite(45, 490, 'panel3-lit'); 
-        this.panels["panel3-lit"].width = 300; 
-        this.panels["panel3-lit"].height =300; 
+        this.panels["panel3-lit"].width = this.sprite_size; 
+        this.panels["panel3-lit"].height = this.sprite_size; 
         
         this.panels["panel3"] = game.add.sprite(45, 490, 'panel3'); 
-        this.panels["panel3"].width = 300; 
-        this.panels["panel3"].height =300; 
+        this.panels["panel3"].width = this.sprite_size; 
+        this.panels["panel3"].height = this.sprite_size; 
 
         this.panels["panel4-lit"] = game.add.sprite(355, 490, 'panel4-lit'); 
-        this.panels["panel4-lit"].width = 300; 
-        this.panels["panel4-lit"].height =300; 
+        this.panels["panel4-lit"].width = this.sprite_size; 
+        this.panels["panel4-lit"].height = this.sprite_size; 
         
         this.panels["panel4"] = game.add.sprite(355, 490, 'panel4'); 
-        this.panels["panel4"].width = 300; 
-        this.panels["panel4"].height =300; 
+        this.panels["panel4"].width = this.sprite_size; 
+        this.panels["panel4"].height = this.sprite_size; 
 
         //set our audio sprites in an array
         this.tones["panel1"] = game.add.audio('panel1');
