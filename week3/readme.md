@@ -151,5 +151,5 @@ Add them to the stage and animate them.
 
 ### Little things, hitting each other
 
-<iframe seamless="seamless" style="width: 100%; border: none; display: block; **max-width: 420px; height: 360px;**" src="https://getyarn.io/yarn-clip/embed/5bf075c1-3725-4ddb-91b7-d20fa18a4b91?autoplay=false"> </iframe>
+[![Time Bandits](https://github.com/seattlecoderdojo/RetroGamingWorkshop/blob/master/week3/assets/readme/timebandits.jpg?raw=true)](https://getyarn.io/yarn-clip/5bf075c1-3725-4ddb-91b7-d20fa18a4b91)
 
