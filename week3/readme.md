@@ -455,8 +455,8 @@ Open them, run fire.1.html in Cloud9 and open it in your browser. Meanwhile, try
 Well, now that we've done all these experiments, next session we'll make a full game. But in the time left, try these things.
 
 - When you kill the alien, spawn a new one somewhere else on the screen.
-- Make it so Gertie's animation *only* plays while he's moving.
-- Instead of shooting missiles, make Gertie shoot more Gerties. But use the `sprite.scaleTo(width, height)` method to shrink him. 1 is full size, .5 would be half. Try some different combos. 
+- Make it so Gertie's animation *only* plays while she's moving.
+- Instead of shooting missiles, make Gertie shoot more Gerties. But use the `sprite.scaleTo(width, height)` method to shrink her. 1 is full size, .5 would be half. Try some different combos. 
 
 
 
