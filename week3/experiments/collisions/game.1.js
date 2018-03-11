@@ -1,13 +1,11 @@
 window.onload = function() {
   game = new Phaser.Game(600, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update  });
   ps = {};
-  ps.projectiles = [];
 
   function preload(){
     //pre load our villain and hero
     game.load.spritesheet('alien', '../sprite-sheet/aliensheet.png', 64, 64, 5, 0, 0);
     game.load.spritesheet('duane', '../sprite-sheet/duanesheet.png', 104, 125, 10, 0, 0);
-    game.load.spritesheet('missile', '../sprite-sheet/missilesheet.png', 8, 18, 4, 0, 0);
 
   }
 
@@ -28,21 +26,15 @@ window.onload = function() {
     ps.alien.anchor.setTo(0.5, 0.5);
     game.physics.enable(ps.alien, Phaser.Physics.ARCADE);   
     ps.alien.body.velocity.x = 150;
-
-    // set up input
-    ps.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    cursors = game.input.keyboard.createCursorKeys();
-
-    //reduce the alien's personal space
-    ps.alien.body.setSize(44, 44, 10 ,10 );
-
-
   }
 
   function update(){ 
     //make sure no one runs away into the ether
     this.game.world.wrap(ps.alien); 
-    ps.duane.body.collideWorldBounds =  true;
+    this.game.world.wrap(ps.duane); 
+
+    //set up our input keys
+    cursors = game.input.keyboard.createCursorKeys();
 
     //enable moving duane left and right
     ps.duane.body.velocity.x = 0;
@@ -54,6 +46,19 @@ window.onload = function() {
     {
         ps.duane.body.velocity.x = 150;
     }
+
+    //enable moving duane up and down
+    ps.duane.body.velocity.y = 0;
+    if (cursors.up.isDown)
+    {
+        ps.duane.body.velocity.y = -150;
+    }
+    else if (cursors.down.isDown)
+    {
+        ps.duane.body.velocity.y = 150;
+    }
+
+    this.game.physics.arcade.collide(ps.duane, ps.alien); 
 
   }
 

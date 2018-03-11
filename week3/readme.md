@@ -2,9 +2,13 @@
 
 For week three, we're going to cover a few new concepts. They are sprite sheets, animation, and collisions. What does that mean? We're going to learn a way to put all our game graphics in one image (because it improves performance). We're going to make things not only move, but move while they move. 
 
-And those things are going to hit each other and explode.
+And those things are going to hit each other and die.
 
 **NOTE FOR THE KIDS WHO ARE DOING THIS DURING OUR FIRST ROUND AT DOJO - PULL FROM GITHUB TO GET THE LATEST FILES. IF YOU'RE DOING THIS AFTER MARCH 25, 2018, YOU PROBABLY ALREADY HAVE ALL THE LATEST FILES**
+
+## Foreword: No battle plan...
+
+Last week there was a very valid criticism that we didn't make enough time to stop and play with stuff. So we're slowing down. That means we'll take two sessions to build this game. But it means we will have more fun doing it, taking more time to experiment and really learn how our Space Invaders inspired video game is made.
 
 ## Part 1: Making Game Art - A DO AT HOME PORTION
 
@@ -54,7 +58,7 @@ Here's Layer 2:
 
 And Layer 5:
 
-![Layer5](https://github.com/seattlecoderdojo/RetroGamingWorkshop/blob/master/week3/assets/readme/alien5.jpg?raw=true)
+![Layer5](https://github.com/seattlecoderdojo/RetroGamingWorkshop/blob/master/week3/assets/readme/alien6.jpg?raw=true)
 
 And if we then loop back and forth between Layer 1 and Layer 5, we get an animation like this...
 
@@ -70,7 +74,7 @@ Sprite sheets help condense multiple graphics into one file which you can chop b
 
 If we go look at the [free download of our knight](https://www.gameart2d.com/the-knight-free-sprites.html), Duane, from Lesson 1, Duane has 7 different movements of 10 frames each. That is 70 different files. A browser can download six to thirteen files from one given website at a time. Each of those downloads has time needed to make the connection, download, and then terminate before the next one can start. All of that is added to the time it takes to download the actual file.
 
-All that connection overhead and connection limits create a choke point.
+All the connection overhead and connection limits can create a choke point.
 
 ![Chokepoint](https://github.com/seattlecoderdojo/RetroGamingWorkshop/blob/master/week3/assets/readme/chokepoint.png?raw=true)
 
@@ -82,7 +86,7 @@ What does a spritesheet look like? Let's look at one we'll use in the game.This 
 
 ![Alien Sprite Sheet](https://github.com/seattlecoderdojo/RetroGamingWorkshop/blob/master/week3/assets/readme/aliensheet.png?raw=true)
 
-Those are 5 frames of an animation of one of the bad guys in our game, the alien we made above. Notice they're right on top of each other. Some sprite sheet makers will go side to side, some top to bottom, some will try to go more square with multiple rows. I've found that [ZeroSprites.com](http://zerosprites.com/) and their top to bottom sheets were the easiest to get right.
+Those are 5 frames of an animation of one of the bad guys in our game, the alien we made above. Notice they're right on top of each other. Some sprite sheet makers will go side to side, some top to bottom, some will try to go more square with multiple rows. I've found that [ZeroSprites.com](http://zerosprites.com/) and their top to bottom sheets were the easiest to get right with Phaser.
 
 So in the `week3` folder, you'll see a folder called `experiments`, and in that a folder called `sprite-sheet`. Open it.
 
@@ -139,7 +143,7 @@ See how it pauses just a bit at the start? That's because the zero frame is bein
 
 #### LAB: ADD MORE ANIMATED SPRITES
 
-There are two more spritesheets in this directory: `ships.png` and `duanesheet.png`. 
+There are two more sprite sheets in this directory: `ships.png` and `duanesheet.png`. 
 
 Ships has 5 frames, is vertical, and is 64 pixels wide by 180 pixels high. 
 
@@ -151,7 +155,7 @@ Add them to the stage and animate them.
 
 ## Part 3: Little things, hitting each other
 
-If you've never seen [Time Bandits](https://www.imdb.com/title/tt0081633), I highly recommend it. In it, Ian Holm (playing Napoleon) sums up many video games (clicking the image below will take you to yarn.com to play a short video clip).
+If you've never seen [Time Bandits](https://www.imdb.com/title/tt0081633), I highly recommend it. In this snippet, Ian Holm (playing Napoleon) sums up many video games (clicking the image below will take you to yarn.com to play a short video clip).
 
 [![Time Bandits](https://github.com/seattlecoderdojo/RetroGamingWorkshop/blob/master/week3/assets/readme/timebandits.jpg?raw=true)](https://getyarn.io/yarn-clip/5bf075c1-3725-4ddb-91b7-d20fa18a4b91)
 
@@ -304,7 +308,7 @@ window.onload = function() {
     cursors = game.input.keyboard.createCursorKeys();
 
     //reduce the alien's personal space
-    ps.alien.body.setSize(44, 44, 10 ,10 );
+    ps.alien.body.setSize(54, 54, 5 , 5 );
   }
 
   function update(){ 
@@ -328,4 +332,118 @@ window.onload = function() {
 
 One of the differences is that we're adding an array to the `ps` object, called `projectiles`. This array will hold things we're shooting... like the missile sprite sheet we've added.
 
-We've moved the creation of the cursor object up to `create`. I'd seen it in `update` in an example, so I'd thought it had to be there. But creating an object is more work than updating it, which means a potentially slower game. So I tried it in `create` and it worked. I also added a variable 
+We've moved the creation of the cursor object up to `create`. I'd seen it in `update` in an example, so I'd thought it had to be there. But creating an object is more work than updating it, which means a potentially slower game. So I tried it in `create` and it worked. I also added a a capture for the space bar. We'll see that soon.
+
+I also reduced the alien's body size, but not Duane's... for the moment.
+
+Last, but not least, in the `update` function, the up and down capture for Duane is removed, and instead of having a world wrap, he has a setting called `collideWorldBounds` set to true on his physics body.
+
+Open fire.html, make sure it's the active tab, and run this with Cloud 9. Try it out.
+
+For the moment, nothing's really changed, except Duane only moves side to side and is blocked by the edges of the game panel.
+
+Now we're going to add in two functions. One will handle the spacebar, by creating a new missile and sending it on its way. The other will check to see if the missile has gone off screen and remove it from memory if it has.
+
+At the top, we'll add a few variables to our `ps` object:
+
+```javascript
+  ps.last_shot = 0;
+  ps.MIN_GAP = 300;
+  ps.MAX_MISSILES = 3;
+  ps.MISSILE_SPEED = 300;
+```
+
+`last_shot` tracks when the last missile was shot. We use all caps to represent that `MIN_GAP`,  `MAX_MISSILES`, and `MISSILE_SPEED` are "constants." That means they *shouldn't* change during the course of the game. Of course we can change them as we play with our code. For now, we'll have a 300 millisecond gap between missiles, a maximum of 3 on screen, and a speed of 300.
+
+In the `update` function, we'll add...
+
+```javascript
+   if(ps.spaceKey.isDown){
+      shootMissile(ps.duane.body.x, ps.duane.body.y);
+    }
+
+    for(var mno = 0;  mno < ps.projectiles.length; mno++){
+      this.game.physics.arcade.collide(ps.projectiles[mno], ps.alien, function(){
+        ps.alien.destroy();
+        ps.projectiles[mno].destroy();
+        ps.projectiles = ps.projectiles.splice(mno,1);
+      });
+    }
+    
+    checkMissiles();
+```
+
+So, if we detect the space bar is down, we'll run a function to shoot a missile.
+
+Meanwhile, we need to check if any of the missiles in our `ps.projectiles` array has hit the alien. You'll see it's just like the way we set up Duane hitting the alien, but it'll be run once for every missile on screen and if it destroys the alien, it'll destroy the missile too. Because what will happen if we don't destroy the missile? 
+
+The alien will simply bump it off course and it'll keep going.
+
+We also need to remove it from the array, or it will live on forever. So we use the array's `splice` method to replace the array with a new version of it that doesn't have the missile.
+
+Last we call a function to check the missiles. Imagine if when a missile went off screen, it stayed in the `ps.projectiles` array. Every time we fired a missile, that check for collisions would take a little longer until it started slowing down the game. So we'll check if each missile has left the screen, and if so, kill it.
+
+Let's add our two functions. First we want to shoot a missile... if it's appropriate.
+
+```javascript
+  function shootMissile(x,y){
+    var timestamp = Date.now();
+    // check if it's been at least MIN_GAP since the last shot and there aren't 
+    // more than MAX_MISSILES on screen.
+    if(((timestamp - ps.last_shot) < ps.MIN_GAP)||(ps.projectiles.length >= ps.MAX_MISSILES)){
+      return true;
+    }
+
+    //we're good, so let's set the time of the last shot
+    ps.last_shot = timestamp;
+
+    //now let's create our missile and send it flying;
+    var missile = game.add.sprite(x, y + 20, 'missile'); //place it
+    missile.animations.add('fire');
+    missile.animations.play('fire', 12 , true); // animate the little fire exhaust
+    game.physics.enable(missile, Phaser.Physics.ARCADE);
+    missile.body.velocity.y = ps.MISSILE_SPEED;
+    ps.projectiles.push(missile); // add the missile to the projectiles array
+  }
+```
+
+The comments tell you what we're doing. First, we're getting a timestamp in milliseconds and checking if it's been long enough since we fired the last missile to fire another. We're also checking if the array containing the missiles on screen is greater than the maximum. 
+
+If either check fails, we return and don't continue.
+
+If they pass, we set the `last_shot` time to the timestamp we just grabbed, and we create a missile. It's much like if it was being created in the `create` function, but it's being done on demand.
+
+Then we use the `push` method of the `ps.projectiles` array to add the missile to it.
+
+Last our `checkMissiles` function...
+
+```javascript
+  function checkMissiles(){
+    for(var i = 0; i < ps.projectiles.length; i++ ){
+      //check if missile's location is it's height above the top of the panel
+      if(ps.projectiles[i].y < (0 - ps.projectiles[i].height)){
+        ps.projectiles[i].destroy(); // destroy the sprite
+        ps.projectiles.pop();
+      }
+    }
+  }
+```
+
+Like with the check for the collision, we loop through the array. If the missile is offscreen (zero minus the missile's height), we destroy the sprite to free up memory in the game object and remove the entry from the array. With this, since the missiles have the same speed, we always know that the highest missile will be first. Using the array `pop` function, we can just "pop" the first item off of the array.
+
+**Rather than make you cut and paste all that, you'll find the file in fire.1.html and fire.1.js** 
+
+Open them, run fire.1.html in Cloud9 and open it in your browser. Meanwhile, try changing things like the setSize on the alien, the maximum number of missiles, and the delay between them to see how that changes things.
+
+## Part 4: Making a game out of it
+
+Well, now that we've done all these experiments, next session we'll make a full game. But in the time left, try these things.
+
+- When you kill the alien, spawn a new one somewhere else on the screen.
+- Instead of shooting missiles, make Duane shoot more Duanes. But use the `sprite.scaleTo(width, height)` method to shrink him. 1 is full size, .5 would be half. Try some different combos. 
+
+
+
+
+
+
