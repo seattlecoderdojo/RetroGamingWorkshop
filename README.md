@@ -15,13 +15,13 @@ Improve your mastery of getting and using player input, randomness, arrays, mani
 
 ## Session 3: Dojo Invaders (Space Invaders Clone)
 
-Improve your mastery of animation, handling a more aggressive game loop with many objects to track, collisions, and scoring.
+Improve your mastery of animation, sprite sheets, and collisions.
 
-## Session 4: Side Scrolling Platformer - Part I
+## Session 4: Dojo Invaders Part II
 
-Improve your mastery of layered backgrounds, arcade physics, and basic level design.
+Learn about tracking and moving a whole crowd of enemies, decomposing sprites, and scoring your game.
 
-## Session 5: Side Scrolling Platformer - Part II
+## Session 5: Side Scrolling Platformer - Part I
 
 Improve your mastery of building more complex levels, power ups, and game geometry.
 

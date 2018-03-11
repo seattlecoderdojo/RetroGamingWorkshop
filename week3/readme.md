@@ -8,6 +8,8 @@ And those things are going to hit each other and die.
 
 ## Foreword: No battle plan...
 
+As the old saying goes, no battle plan survives its first encounter with the enemy.
+
 Last week there was a very valid criticism that we didn't make enough time to stop and play with stuff. So we're slowing down. That means we'll take two sessions to build this game. But it means we will have more fun doing it, taking more time to experiment and really learn how our Space Invaders inspired video game is made.
 
 ## Part 1: Making Game Art - A DO AT HOME PORTION
@@ -16,7 +18,7 @@ I didn't intend to do a lesson on creating 8-bit game art. But I mistakenly thou
 
 So, since I wanted at least one of our retro-style games to have some retro-style graphics, I figured I'd create a few. And wouldn't it be pointless for me to do that if I didn't document how I did it?
 
-This is not part of the workshop for a very specific reason... you could spend all session playing with this and other pixel art tools (like [Piskelapp.com](https://piskelapp.com)).
+This is not part of the workshop for a very specific reason... you could spend all session playing with this and other pixel art tools (like [Piskelapp.com](https://piskelapp.com)). But you're welcome to play with pixel art all week bwteeen now and the next session, make some sprite sheets of your own, and use them in your game next week.
 
 This example uses [Inkscape](https://www.inkscape.org), which is a wonderful SVG drawing program. A lot of people compare it to Adobe Illustrator. I have been using it for years and actually like it better than Illustrator, plus it works on Windows, Mac, and Linux,  and it's free. If you need an introduction to how it works, check out our [Seattle CoderDojo Inkscape videos](https://www.youtube.com/watch?v=f0mTWb5gF0c&list=PL_tz20e9Bk_hiYVtDZA5kf4l-91B0THWL).
 
