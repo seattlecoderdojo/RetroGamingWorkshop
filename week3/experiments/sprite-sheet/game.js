@@ -8,6 +8,8 @@ window.onload = function() {
 
   function create(){
 
+     game.stage.backgroundColor = "#220055";
+
      var alien = this.game.add.sprite(30,30, 'alien');
      var wiggle = alien.animations.add('wiggle');
      alien.animations.play('wiggle', 10 ,true)

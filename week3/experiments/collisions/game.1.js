@@ -10,6 +10,7 @@ window.onload = function() {
   }
 
   function create(){
+    game.stage.backgroundColor = "#220055";
     //add our hero and villain to the screen and set their animations
     ps.duane = this.game.add.sprite( 63 , 475 ,'duane');
     ps.duane.animations.add('kill');

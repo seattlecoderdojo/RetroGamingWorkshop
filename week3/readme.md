@@ -74,7 +74,7 @@ Using *File->Export Png Image*, we open the panel for that under the layers pane
 
 Sprite sheets help condense multiple graphics into one file which you can chop back up into the individual images in the game. Why would you want to do this?
 
-If we go look at the [free download of our knight](https://www.gameart2d.com/the-knight-free-sprites.html), Duane, from Lesson 1, Duane has 7 different movements of 10 frames each. That is 70 different files. A browser can download six to thirteen files from one given website at a time. Each of those downloads has time needed to make the connection, download, and then terminate before the next one can start. All of that is added to the time it takes to download the actual file.
+If we go look at the [free download of our knight](https://www.gameart2d.com/the-knight-free-sprites.html), Duane, from Lesson 1, Duane has 7 different movements of 10 frames each. That is 70 different files. A browser can download six to thirteen files from one given website at a time. Each of those downloads requires time to make the connection, download, and then terminate before the next one can start. All of that is added to the time it takes to download the actual file.
 
 All the connection overhead and connection limits can create a choke point.
 
@@ -82,7 +82,7 @@ All the connection overhead and connection limits can create a choke point.
 
 
 
-It slows down the loading of your game at the start, slows down the preloading of levels, etc. One big file transmits faster than a lot of little ones, and the speed savings are much bigger than the time it takes for Phaser to chop that file up. So when we put all those sprite files into one, we call it a "Sprite Sheet."
+It slows down the loading of your game at the start, slows down the preloading of levels, etc. One big file transmits faster than a lot of little ones, and the speed savings can be much bigger than the time it takes for Phaser to chop that file up. So when we put all those sprite files into one, we call it a "Sprite Sheet."
 
 What does a spritesheet look like? Let's look at one we'll use in the game.This was made with an online sprite sheet maker I found that is free and Phaser friendly: [ZeroSprites.com](http://zerosprites.com/).
 
@@ -101,9 +101,9 @@ window.onload = function() {
     game.load.spritesheet('alien', 'aliensheet.png', 64, 64, 5, 0, 0);
   }
 ```
-It starts like any of the other ones with the `window.onload` creating a 300x300 game board, but in our preload function, we have a new asset type. We've loaded image and audio types, but now we have a spritesheet type. And like the others, you give it a nickname and a pointer to the file in the arguments, but here we have 4 more arguments (and we could have more).
+It starts like any of the other ones with the `window.onload` creating a 300x300 game board, but in our preload function, we have a new asset type. We've loaded image and audio types, but now we have a spritesheet type. And like the others, you give it a nickname and a pointer to the file in the arguments, but here we have five more arguments (and we could have more).
 
-The four arguments after the file name are the width of each frame (in pixels), the height of each frame (in pixels), the number of frames to load, and any margin or padding your spritesheet might have for each frame.
+The five arguments after the file name are the width of each frame (in pixels), the height of each frame (in pixels), the number of frames to load, and any margin or padding your spritesheet might have for each frame.
 
 Let's finish up the file.
 
@@ -115,13 +115,15 @@ Let's finish up the file.
   }
 }
 ```
-In the create function, we add the alien like we would any sprite. But because it's a spritesheet with frames, we can add an animation to it, which we'll name "wiggle." Then we tell the game to play "wiggle" at ten frames per second, and the "true" is for whether it should loop/repeat.
+In the create function, we add the alien like we would any sprite. But because it's a spritesheet with frames, we can add an animation to it, which we'll name "wiggle." Then we tell the game to play "wiggle" at ten frames per second, and the "true" is for whether it should loop.
+
+When would you want to loop or not? Here's an example. You have a character. She has a running animation. You'd want that to loop/repeat as long as she was running. She also has a dying animation. You'd only want her to go through the dying animation once, and not die over and over repetitively... right?
 
 Let's open the index.html for the folder, make sure it's the active document, and click play in Cloud9, then load it up. Everyone do this. What do you see? 
 
-Now, let's look at our alien. We're not moving it, but we are playing its animation frames, so it's "legs" are moving. But they only move in one direction, from left to right, and then reset. Maybe that's a little hard to notice, so let's change 10 to 5 so slow it down by half, and reload.
+Now, let's look at our alien. We're not moving it, but we are playing its animation frames, so it's "legs" are moving. But they only move in one direction, from left to right, and then reset. Maybe that's a little hard to notice, so let's change the frame rate from 10 to 5, and reload.
 
-How can we make it go back and forth? Well, you remember those five frames? They each got a number as they were imported. And because computers start counting at 0, their numbers are 0 - 4.
+How can we make it go back and forth? Well, you remember those five frames? They each got assigned a number as they were imported. And because computers start counting at 0, their numbers are 0 - 4.
 
 When we add that named animation, we can specify which frames it includes. So let's change that line, where we define "wiggle."
 
@@ -137,9 +139,11 @@ Now we're just seeing the middle of the animation loop. How could we see the who
 var wiggle = alien.animations.add('wiggle', [0, 1, 2, 3, 4, 3, 2, 1]);
 ```
 
-Why don't we include zero at the end? Are we doubling up four in the middle? Because zero will play at the beginning of the next loop, if we put it at the end of the loop, we'll play it twice. 
+Let's run it. Looks good.
 
-Try it with the version above, and then add a zero on to the end of the array to see how that changes things.
+You might be asking, why we don't include zero at the end. Are we doubling up four in the middle? Zero will play at the beginning of the next loop, so if we put it at the end of the loop, we'll play it twice. 
+
+Try adding a zero on to the end of the array to see how that changes things.
 
 See how it pauses just a bit at the start? That's because the zero frame is being played twice
 
@@ -161,7 +165,7 @@ If you've never seen [Time Bandits](https://www.imdb.com/title/tt0081633), I hig
 
 [![Time Bandits](https://github.com/seattlecoderdojo/RetroGamingWorkshop/blob/master/week3/assets/readme/timebandits.jpg?raw=true)](https://getyarn.io/yarn-clip/5bf075c1-3725-4ddb-91b7-d20fa18a4b91)
 
-In many video games, when a sprite touches another sprite, something is supposed to happen. If a player shoots at the enemy and hits them, we will need to do something about it. So we usually implement whatever was shot at the enemy as a sprite and then we need to detect when sprites touch sprites. These are called "collisions," or as I like to call them: "little things, hitting each other."
+In many video games, when a sprite touches another sprite, something is supposed to happen. If a player shoots at the enemy and hits them, we will need to do something about it. So we need to detect when sprites touch sprites. These events are called "collisions," or as I like to call them: "little things, hitting each other."
 
 Let's go to the `collisions` folder in the `week3\experiments` folder. In this one we have two collision experiments, `index.html` (paired with `game.js`), and `fire.html` (paired with `fire.js`). 
 
@@ -233,7 +237,9 @@ This is all stuff you've seen before, so no need to step through it in detail. W
 
 Open `index.html` in Cloud9, make it the active tab, and click "Run," then open the resulting URL in the browser. Move Duane up so the alien will run into him. What happens?
 
-The alien passes right over him. Why does it pass over rather than under? Remember, they layer in the order we added them to the game in our `create` function. We added Duane first, then the alien second, so the alien will be on top.
+The alien passes right over him. Why does it pass over rather than under? 
+
+Remember, they layer in the order we added them to the game in our `create` function. We added Duane first, then the alien second, so the alien will be in front.
 
 Now let's add collision detection. Under the up/down detection for Duane, add this line.
 
@@ -243,7 +249,7 @@ Now reload and move Duane into the alien's path. What happens when they collide?
 
 We can change this by messing with the game physics, but we'll get more into game physics with the platformer. What concerns us now is handling that collision.
 
-We can add a function to the arguments we pass to the collide function.
+Let's add a function to the arguments we pass to the collide function.
 ```javascript
     this.game.physics.arcade.collide(ps.duane, ps.alien, function(){
         ps.alien.destroy();
@@ -265,7 +271,7 @@ ps.duane.body.setSize(54, 75, 25, 25);
 ps.alien.body.setSize(44, 44, 10, 10); 
 ```
 
-We've dropped Duane's width and height by 50 (104 to 54, 125 to 75) and we've set offsets of 25 and 25, so that the smaller body size will be put in the middle, using half off the shrink amount as the offset.
+We've dropped Duane's width and height by 50 (104 to 54, 125 to 75) and we've set offsets of 25 and 25, so that the smaller body size will be put in the middle of the bigger box Duane occupies. Note how our offsets are half of the amount we've shrunk the body by.
 
 We've done the same to the alien, but by 20, with offsets of 10.
 
@@ -283,50 +289,51 @@ window.onload = function() {
   function preload(){
     //pre load our villain and hero
     game.load.spritesheet('alien', '../sprite-sheet/aliensheet.png', 64, 64, 5, 0, 0);
-    game.load.spritesheet('duane', '../sprite-sheet/duanesheet.png', 104, 125, 10, 0, 0);
+    game.load.spritesheet('ninjagirl', '../sprite-sheet/ninjagirlsheet.png', 116, 125, 10, 0, 0);
     game.load.spritesheet('missile', '../sprite-sheet/missilesheet.png', 8, 18, 4, 0, 0);
   }
 
   function create(){
+    game.stage.backgroundColor = "#220055";
     //add our hero and villain to the screen and set their animations
-    ps.duane = this.game.add.sprite( 63 , 475 ,'duane');
-    ps.duane.animations.add('kill');
-    ps.duane.animations.play( 'kill', 12 , true );
+    ps.ninjagirl = this.game.add.sprite( 63 , 475 ,'ninjagirl');
+    ps.ninjagirl.animations.add('kill');
+    ps.ninjagirl.animations.play( 'kill', 12 , true );
 
     ps.alien = this.game.add.sprite( 240 , 90 ,'alien');
     ps.alien.animations.add('walk', [0, 1, 2, 3, 4, 3, 2, 1]);
     ps.alien.animations.play( 'walk', 8 , true );
 
     //center their anchors and enable their physics
-    ps.duane.anchor.setTo(0.5, 0.5);
-    game.physics.enable(ps.duane, Phaser.Physics.ARCADE);   
+    ps.ninjagirl.anchor.setTo(0.5, 0.5);
+    game.physics.enable(ps.ninjagirl, Phaser.Physics.ARCADE);   
     
     ps.alien.anchor.setTo(0.5, 0.5);
     game.physics.enable(ps.alien, Phaser.Physics.ARCADE);   
     ps.alien.body.velocity.x = 150;
 
     // set up input
-    this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    ps.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     cursors = game.input.keyboard.createCursorKeys();
 
     //reduce the alien's personal space
-    ps.alien.body.setSize(54, 54, 5 , 5 );
+    ps.alien.body.setSize(44, 44, 10 ,10 );
   }
 
   function update(){ 
     //make sure no one runs away into the ether
     this.game.world.wrap(ps.alien); 
-    ps.duane.body.collideWorldBounds =  true;
+    ps.ninjagirl.body.collideWorldBounds =  true;
 
-    //enable moving duane left and right
-    ps.duane.body.velocity.x = 0;
+    //enable moving ninjagirl left and right
+    ps.ninjagirl.body.velocity.x = 0;
     if (cursors.left.isDown)
     {
-        ps.duane.body.velocity.x = -150;
+        ps.ninjagirl.body.velocity.x = -150;
     }
     else if (cursors.right.isDown)
     {
-        ps.duane.body.velocity.x = 150;
+        ps.ninjagirl.body.velocity.x = 150;
     }
   }
 }
@@ -334,15 +341,19 @@ window.onload = function() {
 
 One of the differences is that we're adding an array to the `ps` object, called `projectiles`. This array will hold things we're shooting... like the missile sprite sheet we've added.
 
-We've moved the creation of the cursor object up to `create`. I'd seen it in `update` in an example, so I'd thought it had to be there. But creating an object is more work than updating it, which means a potentially slower game. So I tried it in `create` and it worked. I also added a a capture for the space bar. We'll see that soon.
+Another is... where's Duane? In the interests of equal time for girls, we've swapped Duane for a female ninja called `ninjagirl`. In my mind, I'm calling her Gertie (short for Gertrude). I just didn't have time to change it in the code because I named her after I coded her. You can obviously change her name however you want.
 
-I also reduced the alien's body size, but not Duane's... for the moment.
+We've also moved the creation of the cursor object up to `create`. It wasn't my intent to introduce this now. When we put it in `update` in week 1, it was because I'd seen it in `update` in an example, so I'd thought it had to be there. 
 
-Last, but not least, in the `update` function, the up and down capture for Duane is removed, and instead of having a world wrap, he has a setting called `collideWorldBounds` set to true on his physics body.
+Creating an object is more work than updating it, which means a potentially slower game. So I tried it in `create` and it worked. I also added a capture for the space bar. We'll use that soon.
+
+I also reduced the alien's body size, but not Gertie's, because Gertie will not directly attack the alien.
+
+Last, but not least, in the `update` function, the up and down capture for Gertie is removed, and instead of having a world wrap, she has a setting called `collideWorldBounds` set to true on her physics body.
 
 Open fire.html, make sure it's the active tab, and run this with Cloud 9. Try it out.
 
-For the moment, nothing's really changed, except Duane only moves side to side and is blocked by the edges of the game panel.
+For the moment, nothing's really changed, except Gertie only moves side to side and is blocked by the edges of the game panel. The  `collideWorldBounds` setting changes it so Gertie is blocked by the edges of the gameplay area instead of passing through them.
 
 Now we're going to add in two functions. One will handle the spacebar, by creating a new missile and sending it on its way. The other will check to see if the missile has gone off screen and remove it from memory if it has.
 
@@ -355,13 +366,15 @@ At the top, we'll add a few variables to our `ps` object:
   ps.MISSILE_SPEED = 300;
 ```
 
-`last_shot` tracks when the last missile was shot. We use all caps to represent that `MIN_GAP`,  `MAX_MISSILES`, and `MISSILE_SPEED` are "constants." That means they *shouldn't* change during the course of the game. Of course we can change them as we play with our code. For now, we'll have a 300 millisecond gap between missiles, a maximum of 3 on screen, and a speed of 300.
+`last_shot` tracks when the last missile was shot. We use all caps to represent that `MIN_GAP`,  `MAX_MISSILES`, and `MISSILE_SPEED` are "constants." That means they *shouldn't* change during the course of the game. Of course we can change them as we play with our code, but none of our other code should change them. 
+
+For now, we'll have a 300 millisecond gap between missiles, a maximum of 3 on screen, and a speed of 300.
 
 In the `update` function, we'll add...
 
 ```javascript
    if(ps.spaceKey.isDown){
-      shootMissile(ps.duane.body.x, ps.duane.body.y);
+      shootMissile(ps.ninjagirl.body.x, ps.ninjagirl.body.y);
     }
 
     for(var mno = 0;  mno < ps.projectiles.length; mno++){
@@ -375,15 +388,15 @@ In the `update` function, we'll add...
     checkMissiles();
 ```
 
-So, if we detect the space bar is down, we'll run a function to shoot a missile.
+So, if we detect the space bar is down, we'll run a function to shoot a missile from Gertie's x and y coordinates.
 
-Meanwhile, we need to check if any of the missiles in our `ps.projectiles` array has hit the alien. You'll see it's just like the way we set up Duane hitting the alien, but it'll be run once for every missile on screen and if it destroys the alien, it'll destroy the missile too. Because what will happen if we don't destroy the missile? 
+Meanwhile, we need to check if any of the missiles in our `ps.projectiles` array has hit the alien. You'll see it's just like the way we set up Gertie hitting the alien, but it'll be run once for every missile on screen and if it destroys the alien, it'll destroy the missile too. Because what will happen if we don't destroy the missile? 
 
-The alien will simply bump it off course and it'll keep going.
+The alien will simply bump it off course and the missile will keep going.
 
-We also need to remove it from the array, or it will live on forever. So we use the array's `splice` method to replace the array with a new version of it that doesn't have the missile.
+We also need to remove it from the array, or that little part of it could live on forever. So we use the array's `splice` method to replace the array with a new version of it that doesn't have the missile.
 
-Last we call a function to check the missiles. Imagine if when a missile went off screen, it stayed in the `ps.projectiles` array. Every time we fired a missile, that check for collisions would take a little longer until it started slowing down the game. So we'll check if each missile has left the screen, and if so, kill it.
+Last we call a function to check the remaining missiles. Imagine if when a missile went off screen, it stayed in the `ps.projectiles` array. Every time we fired a missile, that check for collisions would take a little longer until it started slowing down the game. So we'll check if each missile has left the screen, and if so, kill it.
 
 Let's add our two functions. First we want to shoot a missile... if it's appropriate.
 
@@ -409,7 +422,7 @@ Let's add our two functions. First we want to shoot a missile... if it's appropr
   }
 ```
 
-The comments tell you what we're doing. First, we're getting a timestamp in milliseconds and checking if it's been long enough since we fired the last missile to fire another. We're also checking if the array containing the missiles on screen is greater than the maximum. 
+The comments tell you what we're doing. First, we're getting a timestamp in milliseconds and checking if it's been long enough since we fired the last missile to fire another. We're also checking if the array containing the missiles on screen is bigger than the maximum size. 
 
 If either check fails, we return and don't continue.
 
@@ -442,10 +455,8 @@ Open them, run fire.1.html in Cloud9 and open it in your browser. Meanwhile, try
 Well, now that we've done all these experiments, next session we'll make a full game. But in the time left, try these things.
 
 - When you kill the alien, spawn a new one somewhere else on the screen.
-- Instead of shooting missiles, make Duane shoot more Duanes. But use the `sprite.scaleTo(width, height)` method to shrink him. 1 is full size, .5 would be half. Try some different combos. 
-
-
-
+- Make it so Gertie's animation *only* plays while he's moving.
+- Instead of shooting missiles, make Gertie shoot more Gerties. But use the `sprite.scaleTo(width, height)` method to shrink him. 1 is full size, .5 would be half. Try some different combos. 
 
 
 
