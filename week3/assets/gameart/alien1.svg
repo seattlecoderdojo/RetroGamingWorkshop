@@ -16,9 +16,9 @@
    id="svg8"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
    sodipodi:docname="alien1.svg"
-   inkscape:export-filename="C:\Users\gregb\OneDrive\CoderDojo\DojoClass\RetroGamingWorkshop\week3\assets\gameart\alien1-test1.png"
-   inkscape:export-xdpi="150"
-   inkscape:export-ydpi="150">
+   inkscape:export-filename="C:\Users\gregb\OneDrive\CoderDojo\DojoClass\RetroGamingWorkshop\week3\assets\gameart\frames\alien8.png"
+   inkscape:export-xdpi="76.800003"
+   inkscape:export-ydpi="76.800003">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -29,20 +29,20 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9195959"
-     inkscape:cx="37.266241"
+     inkscape:cx="16.747517"
      inkscape:cy="39.617819"
      inkscape:document-units="mm"
-     inkscape:current-layer="g8715"
+     inkscape:current-layer="g9331"
      showgrid="true"
      fit-margin-top="0"
      units="px"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1267"
-     inkscape:window-height="852"
-     inkscape:window-x="270"
-     inkscape:window-y="39"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      gridtolerance="10000"
      guidetolerance="11"
@@ -77,7 +77,7 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-13.229167,-69.458328)"
-     style="display:inline">
+     style="display:none">
     <rect
        style="opacity:1;fill:#e6e6e6;fill-opacity:0.98895024;stroke:#e6e6e6;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect6678"
@@ -1157,7 +1157,7 @@
     </g>
   </g>
   <g
-     style="display:none"
+     style="display:inline"
      transform="translate(-13.229167,-69.458328)"
      id="g8715"
      inkscape:groupmode="layer"
