@@ -15,7 +15,10 @@
    version="1.1"
    id="svg850"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
-   sodipodi:docname="missile.svg">
+   sodipodi:docname="missile.svg"
+   inkscape:export-filename="C:\Users\gregb\OneDrive\CoderDojo\DojoClass\RetroGamingWorkshop\week3\assets\gameart\missile.png"
+   inkscape:export-xdpi="67.635399"
+   inkscape:export-ydpi="67.635399">
   <defs
      id="defs844" />
   <sodipodi:namedview
@@ -26,7 +29,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="367.25351"
+     inkscape:cx="324.19576"
      inkscape:cy="915.11131"
      inkscape:document-units="mm"
      inkscape:current-layer="g1591"
@@ -47,7 +50,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -60,24 +63,36 @@
        style="opacity:1;fill:#ffff00;fill-opacity:1;stroke:#000000;stroke-width:0.09178683;stroke-miterlimit:4;stroke-dasharray:none"
        d="m 97.257988,49.760574 v 0.694531 c 0.08751,0.08061 0.175006,0.161232 0.262515,0.241845 -0.189998,0.555694 -0.379992,1.111388 -0.56999,1.667082 l 0.944645,-0.871781 0.376722,2.027782 c 0.05151,-0.67696 0.103007,-1.353923 0.154511,-2.030883 l 1.039731,0.861446 -0.752409,-1.659848 0.147793,-0.153479 v -0.776695 z"
        id="path1555"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\gregb\OneDrive\CoderDojo\DojoClass\RetroGamingWorkshop\week4\assets\gameart\missile.png"
+       inkscape:export-xdpi="90.18"
+       inkscape:export-ydpi="90.18" />
     <rect
        style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.04038149;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect1530"
        width="1.7259836"
        height="5.2919059"
        x="97.344513"
-       y="45.055126" />
+       y="45.055126"
+       inkscape:export-filename="C:\Users\gregb\OneDrive\CoderDojo\DojoClass\RetroGamingWorkshop\week4\assets\gameart\missile.png"
+       inkscape:export-xdpi="90.18"
+       inkscape:export-ydpi="90.18" />
     <rect
        y="43.465694"
        x="97.730125"
        height="1.5139152"
        width="0.95475793"
        id="rect819"
-       style="opacity:1;fill:#ff00ff;fill-opacity:0.98895024;stroke:#ff00ff;stroke-width:0.09087929;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="opacity:1;fill:#ff00ff;fill-opacity:0.98895024;stroke:#ff00ff;stroke-width:0.09087929;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="C:\Users\gregb\OneDrive\CoderDojo\DojoClass\RetroGamingWorkshop\week4\assets\gameart\missile.png"
+       inkscape:export-xdpi="90.18"
+       inkscape:export-ydpi="90.18" />
     <g
        id="g1553"
-       transform="matrix(0.83723776,0,0,1,20.153349,-6.7574076)">
+       transform="matrix(0.83723776,0,0,1,20.153349,-6.7574076)"
+       inkscape:export-filename="C:\Users\gregb\OneDrive\CoderDojo\DojoClass\RetroGamingWorkshop\week4\assets\gameart\missile.png"
+       inkscape:export-xdpi="90.18"
+       inkscape:export-ydpi="90.18">
       <rect
          y="55.942471"
          x="93.22818"

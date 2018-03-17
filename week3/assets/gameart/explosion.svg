@@ -15,7 +15,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
-   sodipodi:docname="explosion.svg">
+   sodipodi:docname="explosion.svg"
+   inkscape:export-filename="C:\Users\gregb\OneDrive\CoderDojo\DojoClass\RetroGamingWorkshop\week4\assets\gameart\frames\explosion1.png"
+   inkscape:export-xdpi="14.373894"
+   inkscape:export-ydpi="14.373894">
   <defs
      id="defs2">
     <filter
@@ -148,10 +151,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="75.261154"
+     inkscape:cx="-88.888635"
      inkscape:cy="185.06212"
      inkscape:document-units="mm"
-     inkscape:current-layer="g896"
+     inkscape:current-layer="g876"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1027"
@@ -170,7 +173,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
