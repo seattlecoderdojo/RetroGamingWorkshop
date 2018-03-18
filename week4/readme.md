@@ -2,16 +2,16 @@
 
 Last week, we learned how to make animations with sprite sheets, add collisions so they could hit each other, and handle those collisions to kill a character. You may have even taken it to the next level and made the alien respawn so you had a rudimentary game.
 
-This week we're going to build it into a full game. To do that, we have to do a few more things than we did last week.
+This week we're going to build it into a full game. To do that, we have to do a few more things than we did last week. We'll do the ones in bold in class, the ones in italics will be for homework and next session.
 
-- Make a grid of aliens.
-- Make the grid move.
-- Make it possible to shoot them.
-- Make them explode when shot. 
-- Add sounds.
-- Handle resetting when you've cleared a screen.
-- Make the aliens drop bombs and add the loss scenarios for the player.
-- Add scoring.
+- **Make a grid of aliens.**
+- **Make the grid move.**
+- **Make it possible to shoot them.**
+- **Make them explode when shot.** 
+- **Add sounds.**
+- *Handle resetting when you've cleared a screen.*
+- *Make the aliens drop bombs and add the loss scenarios for the player.*
+- *Add scoring.*
 
 This order isn't necessarily the order everyone would go in, but it was the order I went in as I built the code.
 
@@ -419,7 +419,7 @@ And we have an empty function to call when the level is won. Hmm, what should go
 
 At this point, we can move the ship, fire missiles, blow up aliens... but how do we win?
 
-### LAB ACTIVITIES FOR HERE AND HOME
+### LAB TIME
 
 Google adding text (or look back at our Simon clone) and add scoring. Should there be a different score for each alien? How could you do that.
 
