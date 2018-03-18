@@ -15,8 +15,6 @@ mgd.missiles_live = 0; // helps enforce max missiles on screen
 mgd.herospeed = 300;
 mgd.sfx = []; // an array for our explosions
 mgd.enemycount = 0;
-// just a default value to make sure we don't constantly re-initialize our background music
-mgd.ipsi = "flake"; 
 
 // define our enemies grid...
 mgd.grid =[
@@ -207,9 +205,6 @@ window.onload = function(){
 
   // all new from here on out
   function fireMissile(){
-    if(mgd.shiftKey.isDown){
-      console.log(mgd.aliens);
-    }
     var timestamp = Date.now();
     // check if it's been at least MIN_GAP since the last shot and there aren't 
     // more than MAx_MISSILES on screen.
@@ -242,7 +237,7 @@ window.onload = function(){
   function addExplosion(missile){
     var sploder = game.add.sprite(missile.x,missile.y - 20,'explosion');
     var splode = sploder.animations.add('splode', [0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0]);
-    splode.killOnComplete = true;
+    splode.killOnComplete = true; // HMM this is interesting
     sploder.animations.play('splode', 20, false);
     // play sound
     var soundnum = Math.floor(Math.random() * 4);

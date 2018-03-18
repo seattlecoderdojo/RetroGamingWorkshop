@@ -222,15 +222,6 @@ Open the `shootgrid` .html and .js files. You can close your older ones to keep 
 We have to add a bit of code to this. We'll try to go through it quickly and just call out the interesting bits.
 
 ```javascript
-var mgd = {}; // variable to hold "my game data" throughout
-// setting our gameboard dimensions
-mgd.MAXWIDTH = 1200; // set maximum width of game board in pixels;
-mgd.MAXHEIGHT = 900; // set maximum height of game board in pixels;
-mgd.speed = 1.1;
-mgd.speedup = 1.07;
-mgd.drop = 4;
-mgd.offsetx = 20;
-mgd.offsety = 70; // updated to allow for the score
 mgd.MIN_GAP = 400;
 mgd.MAX_MISSILES = 3;
 mgd.missile_speed = -300;
@@ -239,52 +230,12 @@ mgd.missiles_live = 0; // helps enforce max missiles on screen
 mgd.herospeed = 300;
 mgd.sfx = []; // an array for our explosions
 mgd.enemycount = 0;
-// just a default value to make sure we don't constantly re-initialize our background music
-mgd.ipsi = "flake"; 
+```
+All we've done is set variables similar to the last week where we made it possible for the ninja girl to shoot the alien. The gap is the minimum time in milliseconds between missiles. The comments really explain the rest.
 
-// define our enemies grid...
-mgd.grid =[
-  {
-    alias: 'alien', 
-    width: 56,
-    hgap: 22, 
-    height: 56, 
-    vgap: 25, 
-    count: 10, 
-    rows: 2, 
-    speed: 12,
-    sequence: [0, 1, 2, 3, 4, 3, 2, 1]
-  },
-  {
-    alias: 'rollien', 
-    width: 56, 
-    hgap: 22, 
-    height: 56, 
-    vgap: 25, 
-    count: 10, 
-    rows: 2,  
-    speed: 16,
-    sequence: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0]
-  },
-  {
-    alias: 'saucer', 
-    width: 56, 
-    hgap: 22, 
-    height: 32, 
-    vgap: 25, 
-    count: 10, 
-    rows: 3, 
-    speed: 10,
-    sequence: [0, 1, 2, 3, 4]
-  }
-]
-
-var game = {} // will hold game object
-
-window.onload = function(){
-  game = new Phaser.Game(mgd.MAXWIDTH, mgd.MAXHEIGHT, Phaser.AUTO, '', { preload: preload, create: create, update: update});
-
-  function preload(){
+We'll skip down to our preload...
+```javascript
+function preload(){
     // load our animated sprites
     game.load.spritesheet('saucer', "../assets/gameart/shipsheet.png", 56 , 32, 5, 0, 0);
     game.load.spritesheet('alien', "../assets/gameart/aliensheet.png", 56 , 56 , 5 , 0 , 0 );
@@ -303,19 +254,19 @@ window.onload = function(){
     game.load.audio('bg','../assets/sounds/ipsi-comp.mp3');
 
   }
+```
+Here we've added one more animation for the explosion, static images for the hero and missile, four explosion sounds we got from "The Essential Retro Video Game Sound Effects Collection" by Juhani Junkala, and a background track ("Ipsi") we picked up from https://www.dl-sounds.com/ which offers a nice assortment of free music tracks for games. 
 
-  function create(){
-    //might as add a background color better than basic black
-    game.stage.backgroundColor = '#28283c';
+Their background music file was pretty high quality. I downsampled it to a lower bitrate to make a smaller file at acceptable quality so the game loads faster.
 
-    var aliencounter = 0;
+If we skip down into our `create` function...
+```javascript
+    mgd.ipsi = game.add.audio('bg', .35, true);
+    mgd.ipsi.play();
+```
+We don't need to fade tones in and out here. So we can just play them. We play the `bg` alias (a.k.a. the "Ipsi" music track), and feed two more arguments to the `game.add.audio` function: volume (.35 so it plays at 35% volume since it is background), and looping (true because we want it to start over when it ends).
 
-    //start the background music playing, but only if it wasn't before
-    if(mgd.ipsi === "flake"){
-      mgd.ipsi = game.add.audio('bg', .35, true);
-      mgd.ipsi.play();
-    }
-
+```javascript
     game.stage.backgroundColor = '#28283c';
 
     mgd.aliens = game.add.group();
@@ -325,7 +276,11 @@ window.onload = function(){
     mgd.missiles = game.add.group();
     mgd.missiles.enableBody = true;
     mgd.missiles.physicsBodyType = Phaser.Physics.ARCADE; 
+```
+In earlier versions of the script, we just added the group. Now we're enabling the physics body and setting the body type to arcade physics. This will allow us to more easily check for collisions and going out of bounds. 
 
+We've also added a group for missiles.
+``` javascript
     // loop through our grid of aliens
     for(var i = 0; i < mgd.grid.length; i++){
       //get a new alien type
@@ -353,7 +308,9 @@ window.onload = function(){
         mgd.offsety += (alien.height + alien.vgap);
       } 
     }    
-
+```
+I marked the new bits. We add a name to each alien which we won't use at the moment, but could be handy later. We set their body type to immovable, so when the missile hits it doesn't push the alien. We add to the alien count for each created, then add a handler for each alien's `onKilled` event to reduce the number. When the number hits 0, we can invoke a function to handle winning a level.
+```javascript
     // stock up on some missiles -- NEW
     for (var i = 0; i < 20; i++)
     {
@@ -368,7 +325,13 @@ window.onload = function(){
           if(mgd.missiles_live < 0) mgd.missiles_live = 0;
         })
     }
+```
+We've added a bunch of missiles. By putting them in a group, it makes it a bit easier to handle when members of this group collide with members of the alien group. Since we don't want them all on screen, they get created at 0,0 with their exists and visible variables set to 0.
 
+Another interesting part is that we can set them to automatically check the world bounds (when they're active) and run a reset function when they are out of bounds.
+
+Last, we add an `onKilled` event handler to reduce the count of missiles on screen by 1 and make sure we don't accidentally go negative.
+```javascript
     // put our hero on the screen -- NEW
     var herox = (game.width - 56) / 2;
     var heroy = (game.height - 98)
@@ -385,55 +348,21 @@ window.onload = function(){
     mgd.sfx.push(game.add.audio('splode2'));
     mgd.sfx.push(game.add.audio('splode3'));
     mgd.sfx.push(game.add.audio('splode4'));
-
-    // set our minimum and maximum dimensions for the game, then use the
-    // SHOW_ALL scale mode to keep the game scaled.
-    game.scale.setMinMax(400, 400, mgd.MAXWIDTH, mgd.MAXHEIGHT)
-    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-
-  }
-
-  function update(){
+```
+Last we add our hero and enable the hero's game physics. Right now it will only allow us to help move the hero around, but eventually we could start letting the aliens fight back, and it could come in handy then too.
+```javascript
+function update(){
     /*********** START NEW CODE ****************/
     game.physics.arcade.overlap(mgd.missiles, mgd.aliens, collisionHandler, null, this);
+```
+The line above could possibly be the most important and useful line of code in the game. When an overlap is detected between one of the missiles in our missile group and an alien in the alien group, this calls a function AND SENDS IT POINTERS TO WHICH ALIEN AND WHICH MISSILE MET.
 
-    //set up our hero's moves
-    mgd.hero.body.collideWorldBounds =  true;
-    mgd.hero.body.velocity.x = 0;
-    if (mgd.cursors.left.isDown)
-    {
-        mgd.hero.body.velocity.x = -mgd.herospeed;
-    }
-    else if (mgd.cursors.right.isDown)
-    {
-        mgd.hero.body.velocity.x = mgd.herospeed;
-    }
+Think of all the code you'd have to write to handle 70 aliens and check all the collision possibilities. Instead... one line. This is why people use frameworks.
 
-    if(mgd.spaceKey.isDown){
-      fireMissile();
-    }
-    /*********** END NEW CODE ****************/
-
-    // move the horde of aliens
-    checkBounds();
-    mgd.aliens.x += mgd.speed;
-  }
-
-  function checkBounds(){
-    var w = mgd.aliens.width;
-    var actualX = mgd.aliens.centerX - (w/2);
-    if ((actualX  < 0)||(game.width < (actualX + w))){
-      mgd.drop = mgd.drop * mgd.speedup;
-      mgd.aliens.y += mgd.drop;
-      mgd.speed = mgd.speed * -mgd.speedup;
-    } 
-  }
-
+The rest of the code is the same as you remember from last week for moving the hero and handling the spacebar or the same as it was in the last script we looked at. Let's look at the new stuff.
+```javascript
   // all new from here on out
   function fireMissile(){
-    if(mgd.shiftKey.isDown){
-      console.log(mgd.aliens);
-    }
     var timestamp = Date.now();
     // check if it's been at least MIN_GAP since the last shot and there aren't 
     // more than MAx_MISSILES on screen.
@@ -442,7 +371,6 @@ window.onload = function(){
     }
 
     mgd.missiles_live++;
-
     missile = mgd.missiles.getFirstExists(false);
 
     if (missile)
@@ -452,7 +380,9 @@ window.onload = function(){
         mgd.last_shot = timestamp;
     }
   }
-
+```
+We've seen the code to ensure we don't fire too many or too fast, but the interesting part is the firing itself. It pulls a missile from the missiles group and makes it active. If one is available, we move it to the middle of the hero and set it in motion with the missile speed.
+```
   function resetMissile(missile) {
       missile.kill();
   }
@@ -462,7 +392,11 @@ window.onload = function(){
     missile.kill();
     alien.kill();
   }
+```
+This is all we need to do... if the missile goes offscreen, we invoke it's `kill` function which deactivates it and puts it back into the group of available inactive missiles.
 
+If a missile overlaps an alien... that handler sent pointers to the missile and the alien to our `collisionHandler` function. We just send the missile pointer to the `addExplosion` function (which makes an explosion happen on screen) and then `kill` the missile and alien that overlapped.
+```javascript
   function addExplosion(missile){
     var sploder = game.add.sprite(missile.x,missile.y - 20,'explosion');
     var splode = sploder.animations.add('splode', [0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0]);
@@ -473,12 +407,25 @@ window.onload = function(){
     mgd.sfx[soundnum].volume = .6;
     mgd.sfx[soundnum].play();
   }
-
+```
+For the explosion, we add our explosion sprite *close* to where the missile was, set the animation, and play it. But what's that line right before the play? The sprite has a `killOnComplete` property. If we set it to `true` before we play the animation, the sprite disappears from the screen when the animation ends.
+```javascript
   function levelwin(){
     // HMMMM... What goes here?
   }
 }
 ```
+And we have an empty function to call when the level is won. Hmm, what should go there?
+
+At this point, we can move the ship, fire missiles, blow up aliens... but how do we win?
+
+### LAB ACTIVITIES FOR HERE AND HOME
+
+Google adding text (or look back at our Simon clone) and add scoring. Should there be a different score for each alien? How could you do that.
+
+There's a bomb image in the `assets/gameart` folder. Could you have the aliens start dropping bombs? How would you handle the collision between a bomb and our hero? What if an alien ran into our hero?
+
+How do we start the next level?
 
 
 
