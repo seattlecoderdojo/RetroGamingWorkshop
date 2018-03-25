@@ -37,6 +37,8 @@ var playState = {
     mgd.sfx.push(game.add.audio('splode3'));
     mgd.sfx.push(game.add.audio('splode4'));
 
+    mgd.bombcounter = 0;
+
   },
 
   update: function(){
@@ -45,6 +47,10 @@ var playState = {
     game.physics.arcade.overlap(mgd.missiles, mgd.aliens, mgd.collisionHandler, null, this);
 
     game.physics.arcade.collide(mgd.hero, mgd.aliens, mgd.heroDie, null, this);
+
+    game.physics.arcade.collide(mgd.hero, mgd.bombs, mgd.heroDie, null, this);
+
+    game.physics.arcade.collide(mgd.missiles, mgd.bombs, mgd.dualHandler, null, this);
 
     //set up our hero's moves
     mgd.hero.body.collideWorldBounds =  true;
@@ -61,6 +67,21 @@ var playState = {
     if(mgd.spaceKey.isDown){
       mgd.fireMissile();
     }
+
+    mgd.bombcounter++;
+    if(mgd.bombcounter >= mgd.bombinterval){
+      console.log('bigger');
+      if(mgd.bombinterval > mgd.minbombinterval){
+        mgd.bombinterval -= Math.floor(Math.random()*2); // coin flip to reduce by 1
+      }
+      mgd.dropABomb();
+      mgd.bombcounter = 0;
+      mgd.curbombspeed += 0.25;
+      if(mgd.curbombspeed > mgd.maxbombspeed){
+        mgd.curbombspeed = mgd.maxbombspeed;
+      }
+    }
+
     /*********** END NEW CODE ****************/
 
     // move the horde of aliens
@@ -69,6 +90,34 @@ var playState = {
   },
 
 }
+
+mgd.dropABomb = function (){
+  //who drops the bomb?
+  var enemy = Math.floor(Math.random() * mgd.enemycount);
+  var kids = mgd.aliens.children;
+  var counter = 0;
+  var myalien = 0;
+  for(var i = 0; i < kids.length; i++){
+    if(kids[i].alive){
+      if(counter == enemy){
+        myalien = i;
+        break;
+      } else {
+        counter++;
+      }
+    }
+  }
+
+  var bomb = mgd.bombs.getFirstExists(false);
+
+  if (bomb)
+  {
+      bomb.reset(mgd.aliens.children[myalien].worldPosition.x + 15, mgd.aliens.children[myalien].worldPosition.y + 14);
+      bomb.body.velocity.y = mgd.curbombspeed;
+  }
+
+}
+
 
 mgd.checkBounds = function(){
   var w = mgd.aliens.width;
@@ -113,6 +162,16 @@ mgd.collisionHandler = function (missile, alien){
   alien.kill();
 }
 
+mgd.dualHandler = function (missile, bomb){
+  console.log('bomsle');
+  mgd.addExplosion(missile);
+  mgd.addExplosion(bomb);
+  missile.kill();
+  bomb.kill();
+  mgd.score += mgd.bombscore;
+  mgd.updateScore();
+}
+
 mgd.addExplosion = function (missile){
   var sploder = game.add.sprite(missile.x,missile.y - 20,'explosion');
   var splode = sploder.animations.add('splode', [0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0]);
@@ -143,6 +202,10 @@ mgd.loadGroups = function(){
   mgd.missiles = game.add.group();
   mgd.missiles.enableBody = true;
   mgd.missiles.physicsBodyType = Phaser.Physics.ARCADE; 
+
+  mgd.bombs = game.add.group();
+  mgd.bombs.enableBody = true;
+  mgd.bombs.physicsBodyType = Phaser.Physics.ARCADE; 
 
   // loop through our grid of aliens
   for(var i = 0; i < mgd.grid.length; i++){
@@ -190,15 +253,29 @@ mgd.loadGroups = function(){
       })
   }
 
+  // stock up on some bombs
+  for (var k = 0; k < 20; k++)
+  {
+      var d = mgd.bombs.create(0, 0, 'bomb');
+      d.name = 'bomb' + k;
+      d.exists = false;
+      d.visible = false;
+      d.checkWorldBounds = true;
+      d.body.immovable = true;
+      d.events.onOutOfBounds.add(mgd.resetMissile, this);
+  }
+
+
 }
 
-mgd.heroDie = function(){
+mgd.heroDie = function(hero,alien){
   console.log('hero died');
   mgd.addExplosion(mgd.hero);
   mgd.hero.kill();
   window.setTimeout(function(){
     game.state.start('over');
   }, 600);
+  alien.kill();
 }
 
 

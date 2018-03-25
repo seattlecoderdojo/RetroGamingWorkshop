@@ -1,9 +1,10 @@
 // setting our gameboard dimensions
 mgd.MAXWIDTH = 1200; // set maximum width of game board in pixels;
 mgd.MAXHEIGHT = 900; // set maximum height of game board in pixels;
-mgd.MIN_GAP = 200; // minimum wait between missile fires in 1/1000 of a second
-mgd.MAX_MISSILES = 9;
-mgd.missile_speed = -800;
+mgd.MIN_GAP = 400; // minimum wait between missile fires in 1/1000 of a second
+mgd.MAX_MISSILES = 3;
+mgd.missile_speed = -600;
+mgd.maxbombspeed = 600;
 mgd.herospeed = 400;
 mgd.sfx = []; // an array for our explosions
 mgd.highscore = 0;
@@ -11,21 +12,24 @@ mgd.levelup = 10; // NEW: how many levels before we should we should increment t
                   // set to 0 if we shouldn't increment it.
 mgd.background = {};
 mgd.background_speed = 1.5;
+mgd.minbombinterval = 15;
+mgd.bombscore = 5;
 
 mgd.gamereset = function(){
   // this reset function resets the game, keeping the high score, but putting everything else back to new
-  mgd.startspeed = 19.1;
+  mgd.startspeed = 2.1;
   mgd.levelspeed = mgd.startspeed; //NEW: to help keep track of the last level's start speed
   mgd.curspeed = mgd.startspeed; // NEW: to track in-level speed
   mgd.lives = 3; //NEW to track lives per game
   mgd.dead = 0; //NEW to track how many times you died this game
   mgd.speedup = 1.11;
-  mgd.drop = 4;
-  mgd.bombspeed = 300;
+  mgd.basedrop = 4;
+  mgd.bombspeed = 350;
   mgd.curbombspeed = mgd.bombspeed; // so we can speed up bombs
   mgd.level = 0;
   mgd.levelscore = 1; // NEW: a score multiplier for the enemy values
   mgd.score = 0;
+  mgd.bombinterval = 90;
 }
 
 mgd.levelreset = function(){
@@ -38,6 +42,7 @@ mgd.levelreset = function(){
   mgd.level++; // increment the level number
   mgd.levelspeed = mgd.levelspeed * mgd.speedup;
   mgd.curspeed = mgd.levelspeed;
+  mgd.drop = mgd.basedrop;
 }
 
 //initialize values
