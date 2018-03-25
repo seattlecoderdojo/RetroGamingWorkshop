@@ -17,6 +17,7 @@ Since last week, I've added:
 Things I brought back from our memory tones game:
 
 - Game states
+- Custom fonts
 - A start/splash screen
 - A "game over" screen
 

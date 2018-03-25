@@ -12,13 +12,16 @@ var playState = {
     mgd.hiscoreshow.x = game.width - 20 - mgd.hiscoreshow.width;
 
     //start the background music playing, but only if it wasn't before
-    if(!mgd.ipsi === undefined){
+    if(mgd.ipsi !== undefined){
+      console.log('stopping');
       mgd.ipsi.stop();
     } else {
+      console.log('start ipsi');
       mgd.ipsi = game.add.audio('bg', .35, true);
     }
+ 
     mgd.ipsi.play();
-
+ 
 
     mgd.loadGroups();
 
@@ -72,7 +75,6 @@ var playState = {
 
     mgd.bombcounter++;
     if(mgd.bombcounter >= mgd.bombinterval){
-      console.log('bigger');
       if(mgd.bombinterval > mgd.minbombinterval){
         mgd.bombinterval -= Math.floor(Math.random()*2); // coin flip to reduce by 1
       }
@@ -165,7 +167,7 @@ mgd.collisionHandler = function (missile, alien){
 }
 
 mgd.dualHandler = function (missile, bomb){
-  console.log('bomsle');
+
   mgd.addExplosion(missile);
   mgd.addExplosion(bomb);
   missile.kill();
@@ -271,7 +273,6 @@ mgd.loadGroups = function(){
 }
 
 mgd.heroDie = function(hero,alien){
-  console.log('hero died');
   mgd.addExplosion(mgd.hero);
   mgd.hero.kill();
   window.setTimeout(function(){
@@ -284,6 +285,5 @@ mgd.heroDie = function(hero,alien){
 mgd.levelwin = function (){
   mgd.levelreset();
   mgd.loadGroups();
-  console.log(mgd.curspeed)
 }
 
