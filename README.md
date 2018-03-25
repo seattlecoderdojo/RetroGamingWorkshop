@@ -19,9 +19,8 @@ Improve your mastery of animation, sprite sheets, and collisions.
 
 ## Session 4: Dojo Invaders Part II
 
-Learn about tracking and moving a whole crowd of enemies, decomposing sprites, and scoring your game.
+Learn about tracking and moving a whole crowd of enemies, sprite groups, group collisions, and making explosions.
 
-## Session 5: Side Scrolling Platformer - Part I
+## Session 5: Dojo Invaders Part III
 
-Improve your mastery of building more complex levels, power ups, and game geometry.
-
+Finishing up Dojo Invaders (or Alien Shootz), with scorekeeping, levels, the aliens fighting back, and showing off some student games in class.
