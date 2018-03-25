@@ -181,3 +181,8 @@ I'm running short on write-up time, so the places to look for how this is done..
 
 And that's it. I have to get ready to come to Dojo. Thanks for sticking with this for 5 weeks. Suggestions to make it better are appreciated.
 
+
+
+## A parting thought
+
+If you want to keep learning about Phaser, Emanuele Feronato has written [a lot of great tutorials](http://www.emanueleferonato.com/category/phaser/).
