@@ -16,7 +16,6 @@ var playState = {
       console.log('stopping');
       mgd.ipsi.stop();
     } else {
-      console.log('start ipsi');
       mgd.ipsi = game.add.audio('bg', .35, true);
     }
  

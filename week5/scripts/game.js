@@ -3,7 +3,9 @@ mgd.MAXWIDTH = 1200; // set maximum width of game board in pixels;
 mgd.MAXHEIGHT = 900; // set maximum height of game board in pixels;
 mgd.MIN_GAP = 400; // minimum wait between missile fires in 1/1000 of a second
 mgd.MAX_MISSILES = 3;
+mgd.startspeed = 2.1;
 mgd.missile_speed = -600;
+mgd.bombspeed = 350;
 mgd.maxbombspeed = 600;
 mgd.herospeed = 400;
 mgd.sfx = []; // an array for our explosions
@@ -17,14 +19,12 @@ mgd.bombscore = 5;
 
 mgd.gamereset = function(){
   // this reset function resets the game, keeping the high score, but putting everything else back to new
-  mgd.startspeed = 2.1;
   mgd.levelspeed = mgd.startspeed; //NEW: to help keep track of the last level's start speed
   mgd.curspeed = mgd.startspeed; // NEW: to track in-level speed
   mgd.lives = 3; //NEW to track lives per game
   mgd.dead = 0; //NEW to track how many times you died this game
   mgd.speedup = 1.11;
   mgd.basedrop = 4;
-  mgd.bombspeed = 350;
   mgd.curbombspeed = mgd.bombspeed; // so we can speed up bombs
   mgd.level = 0;
   mgd.levelscore = 1; // NEW: a score multiplier for the enemy values
@@ -97,7 +97,6 @@ window.onload = function(){
   game.state.add('load', loadState);
   game.state.add('splash', splashState);
   game.state.add('play', playState);
-  //game.state.add('help', helpState);
   game.state.add('over', overState);  
 
   game.state.start('load');

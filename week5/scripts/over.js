@@ -23,6 +23,7 @@ var overState = {
 
     var highscore = game.add.text(20,20, 'YOUR SCORE: ' + mgd.score + " - HIGH SCORE: " + mgd.highscore, {font: '30px pcsenior', fill: '#EEE'});
     highscore.x = (game.width - highscore.width)/2;
+    mgd.goSplash = true;
   },
   
 
@@ -33,10 +34,18 @@ var overState = {
     mgd.background2.tilePosition.y += mgd.background_speed;
 
 
+
     window.setTimeout(function(){
-      game.state.start('splash');
+      mgd.doGoSplash();
     }, 5000);
 
   }
 
+}
+
+mgd.doGoSplash = function(){
+  if(mgd.goSplash){
+    mgd.goSplash = false;
+    game.state.start('splash');
+  }
 }
