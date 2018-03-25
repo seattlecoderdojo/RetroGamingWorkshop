@@ -14,9 +14,11 @@ var playState = {
     //start the background music playing, but only if it wasn't before
     if(!mgd.ipsi === undefined){
       mgd.ipsi.stop();
+    } else {
+      mgd.ipsi = game.add.audio('bg', .35, true);
     }
-    mgd.ipsi = game.add.audio('bg', .35, true);
     mgd.ipsi.play();
+
 
     mgd.loadGroups();
 
