@@ -4,9 +4,9 @@ var playState = {
 
     init: function(){
         this.myTurn = true;
-        this.myDelay = 300; // initial time between played tones
+        this.myDelay = 230; // initial time between played tones
         this.myTimeout = 2980; // initial timeout (time allowed between tiles)
-        this.myFade = 440; // initial fade in/out length
+        this.myFade = 400; // initial fade in/out length
         this.speedDrop = 40; // each round, the fade gets this much shorter
         this.tones = []; // holds the sounds
         this.panels = []; // holds the panel images
@@ -15,7 +15,7 @@ var playState = {
         this.label= {}; // holds the graphic object with the message
         this.sprite_size = 300; // size of panels
         this.deathClock = {}; // holds the timeout object
-        this.maxTones = 4; // this is the maximum number of tones in a game
+        this.maxTones = 12; // this is the maximum number of tones in a game
         this.myTimeout = 2500;
         this.gameTracker = [];
     },
