@@ -24,3 +24,7 @@ Learn about tracking and moving a whole crowd of enemies, sprite groups, group c
 ## Session 5: Dojo Invaders Part III
 
 Finishing up Dojo Invaders (or Alien Shootz), with scorekeeping, levels, the aliens fighting back, and showing off some student games in class.
+
+## Session n: Dojo Invaders Part IV
+
+Finished during Spring break for the Dojo. Adding bunkers and making it possible for the bombs and missiles to blow off chunks of them.
